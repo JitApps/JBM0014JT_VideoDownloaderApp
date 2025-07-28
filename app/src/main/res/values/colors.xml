@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorMain">#9E251E</color>
+    <color name="colorPrimaryDark">@color/colorMain</color>
+    <color name="colorPrimary">@color/colorMain</color>
+    <color name="colorAccent">@color/colorMain</color>
+
+    <color name="colorCommon">#FABA1A</color>
+
+    <color name="colorBlack">#FF000000</color>
+    <color name="colorWhite">#FFFFFFFF</color>
+
+    <color name="colorBackground">#F6F9FF</color>
+    <color name="colorTitle">#282828</color>
+    <color name="colorSubTitle">#727272</color>
+
+    <color name="colorDark">#464646</color>
+    <color name="colorLight">#ABABAB</color>
+</resources>

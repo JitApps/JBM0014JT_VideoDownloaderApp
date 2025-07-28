@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cvRootError"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cvLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:constraint_referenced_ids="animation_view,tvLoading"
+            app:flow_horizontalGap="@dimen/_20sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/animation_view"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:indeterminateTint="@color/colorMain" />
+
+        <TextView
+            android:id="@+id/tvLoading"
+            style="@style/fontMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:text="@string/kk_loading_please_wait"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/_14ssp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cvError"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_10sdp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_25sdp"
+            android:orientation="vertical"
+            app:constraint_referenced_ids="ivImage,tvMessage,btnRetry"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:padding="@dimen/_15sdp"
+            android:src="@drawable/ic_no_internet" />
+
+        <TextView
+            android:id="@+id/tvMessage"
+            style="@style/fontMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="5"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_25sdp"
+            android:text="@string/kk_error_unknown"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/_12ssp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRetry"
+            style="@style/txtNormalButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/kk_retry" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

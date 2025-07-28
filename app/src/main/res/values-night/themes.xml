@@ -1,0 +1,14 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorMain</item>
+        <item name="colorPrimaryVariant">@color/colorMain</item>
+        <item name="colorOnPrimary">@color/colorCommon</item>
+        <item name="colorAccent">@color/colorMain</item>
+        <item name="fontFamily">@font/my_font</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+</resources>

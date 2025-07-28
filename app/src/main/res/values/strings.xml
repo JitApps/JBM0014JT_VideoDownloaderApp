@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Driver App</string>
+
+    <string name="kk_error_empty_edit">Please Enter Something</string>
+    <string name="kk_error_unknown">An unknown error occurred</string>
+    <string name="kk_error_try_again">Something went wrong! Please try again.</string>
+    <string name="kk_error_try_later">"Something went wrong! Try Again Later."</string>
+    <string name="kk_error_no_data">No Data Available …</string>
+    <string name="kk_error_no_internet">Please Check Your Internet …</string>
+
+    <string name="kk_loading_please_wait">Loading Please Wait</string>
+
+    <string name="kk_ok">OK</string>
+    <string name="kk_retry">Retry</string>
+    <string name="kk_continue">Continue</string>
+    <string name="kk_submit">Submit</string>
+    <string name="kk_cancel">Cancel</string>
+    <string name="kk_yes">Yes</string>
+    <string name="kk_no">No</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
