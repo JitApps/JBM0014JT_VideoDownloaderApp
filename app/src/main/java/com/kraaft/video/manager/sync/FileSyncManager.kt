@@ -47,21 +47,11 @@ class FileSyncManager @Inject constructor(
 
     private fun getQStatusData(folderPath: String): List<FileModel> {
         val listFiles = mutableListOf<FileModel>()
-        context.contentResolver.takePersistableUriPermission(
-            folderPath.toUri(),
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
-        )
         val folder = DocumentFile.fromTreeUri(context, folderPath.toUri());
-        folder?.listFiles()?.onEach { item ->
-            item.name?.let {
-                if (it == ".Statuses") {
-                    item.listFiles().onEach { file ->
-                        if (file.isFile && !file.uri.toString().contains(".nomedia")) {
-                            file.name?.apply {
-                                listFiles.add(FileModel(this, file.uri.toString()))
-                            }
-                        }
-                    }
+        folder?.listFiles()?.onEach { file ->
+            if (file.isFile && !file.uri.toString().contains(".nomedia")) {
+                file.name?.apply {
+                    listFiles.add(FileModel(this, file.uri.toString()))
                 }
             }
         }

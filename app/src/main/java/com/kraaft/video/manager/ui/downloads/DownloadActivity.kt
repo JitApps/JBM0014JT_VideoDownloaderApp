@@ -11,14 +11,6 @@ class DownloadActivity : BaseActivity() {
 
     private var binding: ActivityDownloadBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityDownloadBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
-        setEdgeToEdge()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         binding = null
@@ -32,5 +24,13 @@ class DownloadActivity : BaseActivity() {
                 insets
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        binding = ActivityDownloadBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+        setEdgeToEdge()
     }
 }

@@ -29,10 +29,10 @@ class PreferenceClass @Inject constructor(@ApplicationContext context: Context) 
         editor.putInt(key, value).apply()
     }
 
-    private fun getString(key: String, default: String? = null): String? =
-        sharedPreferences.getString(key, default)
+    fun getString(key: String, default: String = ""): String =
+        sharedPreferences.getString(key, default) ?: ""
 
-    private fun setString(key: String, value: String?) {
+    fun setString(key: String, value: String) {
         editor.putString(key, value).apply()
     }
 
@@ -50,19 +50,8 @@ class PreferenceClass @Inject constructor(@ApplicationContext context: Context) 
     fun getSelectedLanguage(): String = getString(SELECTED_LANGUAGE, "--") ?: "--"
     fun setSelectedLanguage(language: String) = setString(SELECTED_LANGUAGE, language)
 
-    fun setLastSystemLanguage(language: String?) = setString(LAST_SYSTEM_LANGUAGE, language)
+    fun setLastSystemLanguage(language: String) = setString(LAST_SYSTEM_LANGUAGE, language)
     fun setLanguageShown(shown: Boolean) = setBoolean(SHOW_LANGUAGE, shown)
-
-    // List<String> preferences
-    fun setStringList(key: String, list: List<String>) {
-        val json = gson.toJson(list)
-        setString(key, json)
-    }
-
-    fun getStringList(key: String): List<String> {
-        val json = getString(key, null)
-        return if (json != null) gson.fromJson(json, Array<String>::class.java).toList() else emptyList()
-    }
 
     // Theme mode preferences
     fun getThemeMode(): String = getString(THEME_MODE, THEME_SYSTEM_DEFAULT) ?: THEME_SYSTEM_DEFAULT

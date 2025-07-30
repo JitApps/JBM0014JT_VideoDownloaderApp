@@ -12,12 +12,16 @@ class StatusRepo @Inject constructor(
     @ApplicationContext val context: Context,
     private val syncManager: FileSyncManager
 ) {
-    private val _statusData = MutableStateFlow<List<FileModel>>(listOf())
-    val statusData: StateFlow<List<FileModel>>
+    private val _statusData = MutableStateFlow<List<FileModel>?>(null)
+    val statusData: StateFlow<List<FileModel>?>
         get() = _statusData
 
     suspend fun fetchStatus(folderPath: String) {
         _statusData.emit(syncManager.fetchStatus(folderPath))
+    }
+
+    suspend fun fetchDownloads(folderPath: String) {
+        _statusData.emit(syncManager.fetchDownloads(folderPath))
     }
 
 }

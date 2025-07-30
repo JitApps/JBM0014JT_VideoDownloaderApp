@@ -17,6 +17,6 @@ class DownloadRepo @Inject constructor(
         get() = _downloadData
 
     suspend fun fetchDownloads(folderPath: String) {
-        _downloadData.emit(syncManager.fetchStatus(folderPath))
+        _downloadData.emit(syncManager.fetchDownloads(folderPath))
     }
 }

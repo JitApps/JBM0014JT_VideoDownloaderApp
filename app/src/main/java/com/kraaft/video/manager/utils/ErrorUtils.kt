@@ -32,6 +32,7 @@ fun Context.showErrorToast(data: String) {
 
 
 fun LayoutErrorBinding.showLoading(cvMain: ConstraintLayout) {
+    cvRootError.visibility = View.VISIBLE
     cvLoading.visibility = View.VISIBLE
     cvMain.visibility = View.GONE
     cvError.visibility = View.GONE
@@ -40,26 +41,30 @@ fun LayoutErrorBinding.showLoading(cvMain: ConstraintLayout) {
 fun LayoutErrorBinding.showRetry(
     message: String,
     cvMain: ConstraintLayout,
+    buttonText: String = "Retry",
     action: () -> Unit
 ) {
+    cvRootError.visibility = View.VISIBLE
     cvMain.visibility = View.GONE
     cvLoading.visibility = View.GONE
-    tvMessage.text = message
     cvError.visibility = View.VISIBLE
+    btnRetry.visibility = View.VISIBLE
+    tvMessage.text = message
+    btnRetry.text = buttonText
     btnRetry.onSingleClick {
-        showLoading(cvMain)
         action.invoke()
     }
 }
 
 fun LayoutErrorBinding.showError(cvMain: ConstraintLayout) {
+    cvRootError.visibility = View.VISIBLE
     cvMain.visibility = View.GONE
     cvLoading.visibility = View.GONE
-    cvError.visibility = View.GONE
-    btnRetry.visibility = View.VISIBLE
+    cvError.visibility = View.VISIBLE
+    btnRetry.visibility = View.GONE
 }
 
 fun LayoutErrorBinding.showPage(cvMain: ConstraintLayout) {
-    cvError.visibility = View.GONE
+    cvRootError.visibility = View.GONE
     cvMain.visibility = View.VISIBLE
 }

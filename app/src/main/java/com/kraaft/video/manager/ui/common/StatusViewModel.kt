@@ -1,4 +1,4 @@
-package com.kraaft.video.manager.ui.status
+package com.kraaft.video.manager.ui.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,11 +13,16 @@ import javax.inject.Inject
 @HiltViewModel
 class StatusViewModel @Inject constructor(private val statusRepo: StatusRepo) : ViewModel() {
 
-    val statusData: StateFlow<List<FileModel>>
+    val statusData: StateFlow<List<FileModel>?>
         get() = statusRepo.statusData
 
     fun fetchStatus(folderPath: String) = viewModelScope.launch(Dispatchers.IO) {
         statusRepo.fetchStatus(folderPath)
     }
+
+    fun fetchDownloads(folderPath: String) = viewModelScope.launch(Dispatchers.IO) {
+        statusRepo.fetchDownloads(folderPath)
+    }
+
 
 }

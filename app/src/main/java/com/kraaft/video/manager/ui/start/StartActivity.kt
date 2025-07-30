@@ -15,18 +15,6 @@ class StartActivity : AppCompatActivity() {
 
     private var binding: ActivityStartBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        installSplashScreen()
-        enableEdgeToEdge()
-        binding = ActivityStartBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
-        setEdgeToEdge()
-        delayTask {
-            gotoActivity(MainActivity::class.java, true)
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         binding = null
@@ -39,6 +27,18 @@ class StartActivity : AppCompatActivity() {
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
                 insets
             }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        installSplashScreen()
+        enableEdgeToEdge()
+        binding = ActivityStartBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+        setEdgeToEdge()
+        delayTask {
+            gotoActivity(MainActivity::class.java, true)
         }
     }
 }

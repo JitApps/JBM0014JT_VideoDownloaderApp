@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 abstract class BaseFragment : Fragment() {
 
     private var loaderDialog: Dialog? = null
-    private var appContext: Context? = null
+    var appContext: Context? = null
 
     private fun initDialog() {
         appContext?.let {

@@ -6,18 +6,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.kraaft.video.manager.databinding.ActivityMainBinding
 import com.kraaft.video.manager.ui.base.BaseActivity
+import com.kraaft.video.manager.ui.status.StatusActivity
+import com.kraaft.video.manager.utils.gotoActivity
+import com.kraaft.video.manager.utils.onSingleClick
 
 class MainActivity : BaseActivity() {
 
     private var binding: ActivityMainBinding? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
-        setEdgeToEdge()
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -33,4 +28,22 @@ class MainActivity : BaseActivity() {
             }
         }
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+        setEdgeToEdge()
+        onClick()
+    }
+
+    private fun onClick() {
+        binding?.apply {
+            btnApp.onSingleClick {
+                gotoActivity(StatusActivity::class.java, false)
+            }
+        }
+    }
+
 }
