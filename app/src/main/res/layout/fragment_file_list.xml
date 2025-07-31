@@ -17,9 +17,11 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:clipToPadding="false"
             android:paddingBottom="@dimen/_10sdp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/includedError"
         layout="@layout/layout_error" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

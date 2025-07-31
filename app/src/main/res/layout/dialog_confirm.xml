@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_rounded_shape"
+        android:background="@drawable/bg_round_shape_20"
         android:backgroundTint="@color/colorWhite"
         android:layout_gravity="center"
         android:layout_margin="@dimen/_10sdp"

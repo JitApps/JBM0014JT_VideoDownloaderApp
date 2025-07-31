@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.LayoutErrorBinding
 import org.json.JSONObject
@@ -38,30 +39,24 @@ fun LayoutErrorBinding.showLoading(cvMain: ConstraintLayout) {
     cvError.visibility = View.GONE
 }
 
-fun LayoutErrorBinding.showRetry(
+fun LayoutErrorBinding.showError(
     message: String,
     cvMain: ConstraintLayout,
     buttonText: String = "Retry",
-    action: () -> Unit
+    action: (() -> Unit)? = null
 ) {
     cvRootError.visibility = View.VISIBLE
     cvMain.visibility = View.GONE
     cvLoading.visibility = View.GONE
     cvError.visibility = View.VISIBLE
-    btnRetry.visibility = View.VISIBLE
     tvMessage.text = message
-    btnRetry.text = buttonText
-    btnRetry.onSingleClick {
-        action.invoke()
+    action?.let {
+        btnRetry.text = buttonText
+        btnRetry.isVisible = true
+        btnRetry.onSingleClick {
+            action.invoke()
+        }
     }
-}
-
-fun LayoutErrorBinding.showError(cvMain: ConstraintLayout) {
-    cvRootError.visibility = View.VISIBLE
-    cvMain.visibility = View.GONE
-    cvLoading.visibility = View.GONE
-    cvError.visibility = View.VISIBLE
-    btnRetry.visibility = View.GONE
 }
 
 fun LayoutErrorBinding.showPage(cvMain: ConstraintLayout) {

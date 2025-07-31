@@ -19,22 +19,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.florent37.inlineactivityresult.InlineActivityResult
+import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.FragmentFileListBinding
 import com.kraaft.video.manager.model.FileModel
 import com.kraaft.video.manager.ui.base.BaseFragment
 import com.kraaft.video.manager.ui.common.StatusViewModel
 import com.kraaft.video.manager.utils.PreferenceClass
-import com.kraaft.video.manager.utils.WB_PATH
-import com.kraaft.video.manager.utils.W_PATH
-import com.kraaft.video.manager.utils.getBusinessFilesFolder
 import com.kraaft.video.manager.utils.getBusinessFolder
-import com.kraaft.video.manager.utils.getStatusFilesFolder
 import com.kraaft.video.manager.utils.getStatusFolder
 import com.kraaft.video.manager.utils.isPackageInstalled
 import com.kraaft.video.manager.utils.showError
 import com.kraaft.video.manager.utils.showLoading
 import com.kraaft.video.manager.utils.showPage
-import com.kraaft.video.manager.utils.showRetry
 import dagger.hilt.android.AndroidEntryPoint
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
@@ -55,13 +51,11 @@ class FileListFragment : BaseFragment() {
     private var fileListAdapter: FileListAdapter? = null
 
     companion object {
-        const val FOLDER_PATH = "FOLDER_PATH"
-        const val PAGE_STATUS = "PAGE_STATUS"
         fun getInstance(folderPath: String, isStatus: Boolean): FileListFragment {
             return FileListFragment().apply {
                 arguments = Bundle().apply {
-                    putString(FOLDER_PATH, folderPath)
-                    putBoolean(PAGE_STATUS, isStatus)
+                    putString("folderPath", folderPath)
+                    putBoolean("pageStatus", isStatus)
                 }
             }
         }
@@ -74,8 +68,8 @@ class FileListFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        folderPath = arguments?.getString(FOLDER_PATH, "") ?: ""
-        isStatus = arguments?.getBoolean(PAGE_STATUS, false) ?: false
+        folderPath = arguments?.getString("folderPath", "") ?: ""
+        isStatus = arguments?.getBoolean("pageStatus", false) ?: false
     }
 
     override fun onCreateView(
@@ -124,7 +118,7 @@ class FileListFragment : BaseFragment() {
     private fun checkForPermissions() {
         if (isStatus) {
             if (VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-                if (folderPath.endsWith(getStatusFolder()) && (preferenceClass.getString(W_PATH)
+                if (folderPath.endsWith(getStatusFolder()) && (preferenceClass.getString("w_path")
                         .endsWith(getStatusFolder()) || appContext?.isPackageInstalled("com.whatsapp") == false)
                 ) {
                     if (appContext?.isPackageInstalled("com.whatsapp") == false)
@@ -132,7 +126,7 @@ class FileListFragment : BaseFragment() {
                     else
                         startFetchingData()
                 } else if (folderPath.endsWith(getBusinessFolder()) && (preferenceClass.getString(
-                        WB_PATH
+                        "wb_path"
                     )
                         .endsWith(getBusinessFolder()) || appContext?.isPackageInstalled("com.whatsapp.w4b") == false)
                 ) {
@@ -142,7 +136,7 @@ class FileListFragment : BaseFragment() {
                         startFetchingData()
                 } else {
                     binding?.apply {
-                        includedError.showRetry(
+                        includedError.showError(
                             "Please give permission to access media folder",
                             cvMain,
                             "Allow"
@@ -167,9 +161,9 @@ class FileListFragment : BaseFragment() {
         if (isStatus) {
             viewModel.fetchStatus(
                 if (folderPath.endsWith(getStatusFolder())) preferenceClass.getString(
-                    W_PATH, getStatusFolder()
+                    "w_path", getStatusFolder()
                 ) else preferenceClass.getString(
-                    WB_PATH, getBusinessFolder()
+                    "wb_path", getBusinessFolder()
                 )
             )
         } else {
@@ -183,7 +177,7 @@ class FileListFragment : BaseFragment() {
             if ((fileListAdapter?.itemCount ?: 0) > 0) {
                 includedError.showPage(cvMain)
             } else {
-                includedError.showError(cvMain)
+                includedError.showError(getString(R.string.kk_error_no_data), cvMain)
             }
         }
     }
@@ -203,7 +197,7 @@ class FileListFragment : BaseFragment() {
             .onSuccess { result ->
                 result.data?.data?.also { uri ->
                     if (uri.toString().endsWith(getStatusFolder())) {
-                        preferenceClass.setString(W_PATH, uri.toString())
+                        preferenceClass.setString("w_path", uri.toString())
                         appContext?.apply {
                             contentResolver.takePersistableUriPermission(
                                 uri,
@@ -211,7 +205,7 @@ class FileListFragment : BaseFragment() {
                             )
                         }
                     } else if (uri.toString().endsWith(getBusinessFolder())) {
-                        preferenceClass.setString(WB_PATH, uri.toString())
+                        preferenceClass.setString("wb_path", uri.toString())
                         appContext?.apply {
                             contentResolver.takePersistableUriPermission(
                                 uri,

@@ -19,5 +19,10 @@
     <string name="kk_no">No</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_or_paste_url_here">Enter or Paste Url Here</string>
+    <string name="gallery">Gallery</string>
+    <string name="how_to_use">How to Use</string>
+    <string name="download">Download</string>
 
+    <string name="paste_download_link">Paste Link to Download Video or Image</string>
 </resources>
