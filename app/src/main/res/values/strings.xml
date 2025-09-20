@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Driver App</string>
+    <string name="app_name">All Video Downloader</string>
 
     <string name="kk_error_empty_edit">Please Enter Something</string>
     <string name="kk_error_unknown">An unknown error occurred</string>
@@ -9,6 +9,7 @@
     <string name="kk_error_no_internet">Please Check Your Internet …</string>
 
     <string name="kk_loading_please_wait">Loading Please Wait</string>
+    <string name="kk_fetching_please_wait">Fetching Please Wait</string>
 
     <string name="kk_ok">OK</string>
     <string name="kk_retry">Retry</string>

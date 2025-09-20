@@ -25,24 +25,32 @@ import retrofit2.Response
 import java.io.File
 
 
-fun getStatusFilesFolder(): String {
-    return if (Build.VERSION.SDK_INT <= 30) {
-        Environment.getExternalStorageDirectory()
-            .toString() + File.separator + "WhatsApp" + File.separator + "Media" + File.separator + ".Statuses"
-    } else {
-        Environment.getExternalStorageDirectory()
-            .toString() + File.separator + "Android/media/com.whatsapp/WhatsApp/Media/.Statuses"
+fun getWhatsPath(): String {
+    val folderPath =
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Whatsapp"
+    if (!File(folderPath).exists()) {
+        File(folderPath).mkdirs()
     }
+    return folderPath
 }
 
-fun getBusinessFilesFolder(): String {
-    return if (Build.VERSION.SDK_INT <= 30) {
-        Environment.getExternalStorageDirectory()
-            .toString() + File.separator + "WhatsApp Business" + File.separator + "Media" + File.separator + ".Statuses"
-    } else {
-        Environment.getExternalStorageDirectory()
-            .toString() + File.separator + "Android/media/com.whatsapp.w4b/WhatsApp Business/Media/.Statuses"
+
+fun getChingariPath(): String {
+    val folderPath =
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Chingari"
+    if (!File(folderPath).exists()) {
+        File(folderPath).mkdirs()
     }
+    return folderPath
+}
+
+fun getJoshPath(): String {
+    val folderPath =
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Josh"
+    if (!File(folderPath).exists()) {
+        File(folderPath).mkdirs()
+    }
+    return folderPath
 }
 
 fun getStatusFolder(): String {
@@ -142,3 +150,4 @@ fun Context.isPackageInstalled(packageName: String): Boolean {
         return false
     }
 }
+

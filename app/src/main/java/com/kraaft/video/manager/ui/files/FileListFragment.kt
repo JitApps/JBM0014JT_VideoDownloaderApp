@@ -42,7 +42,7 @@ class FileListFragment : BaseFragment() {
     @Inject
     lateinit var preferenceClass: PreferenceClass
 
-    private val viewModel: StatusViewModel by viewModels()
+    private val viewModel: StatusViewModel by activityViewModels()
 
     private var binding: FragmentFileListBinding? = null
     private var folderPath = ""

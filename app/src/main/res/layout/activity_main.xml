@@ -9,7 +9,7 @@
     tools:context=".ui.main.MainActivity">
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:layout_width="@dimen/_100sdp"
+        android:layout_width="@dimen/_120sdp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:constraint_referenced_ids="btnApp,btnChingari,btnJosh"

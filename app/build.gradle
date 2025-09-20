@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'com.kraaft.video.manager'
-    compileSdk 36
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.kraaft.video.manager"
         minSdk 24
-        targetSdk 36
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -95,4 +95,7 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
+
+    implementation(libs.prdownloader)
+    implementation libs.jsoup
 }

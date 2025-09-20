@@ -1,17 +1,19 @@
-package com.kraaft.video.manager.ui.josh
+package com.kraaft.video.manager.ui.chingari
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.kraaft.driver.manager.ui.main.PagerFragmentAdapter
 import com.kraaft.video.manager.R
-import com.kraaft.video.manager.databinding.ActivityJoshBinding
+import com.kraaft.video.manager.databinding.ActivityChingariBinding
 import com.kraaft.video.manager.ui.base.BaseActivity
 import com.kraaft.video.manager.ui.common.StatusViewModel
 import com.kraaft.video.manager.ui.downloads.DownloadActivity
 import com.kraaft.video.manager.ui.files.FileListFragment
-import com.kraaft.video.manager.utils.getJoshPath
+import com.kraaft.video.manager.utils.downloadFile
+import com.kraaft.video.manager.utils.getChingariPath
 import com.kraaft.video.manager.utils.gotoActivity
 import com.kraaft.video.manager.utils.isNotEmpty
 import com.kraaft.video.manager.utils.onSingleClick
@@ -20,12 +22,13 @@ import com.kraaft.video.manager.utils.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import org.jsoup.Jsoup
 
-class JoshActivity : BaseActivity() {
-    private var binding: ActivityJoshBinding? = null
+class ChingariActivity : BaseActivity() {
+
+    private var binding: ActivityChingariBinding? = null
     private var fileListFragment: FileListFragment? = null
+
     private val viewModel: StatusViewModel by viewModels()
 
     override fun onDestroy() {
@@ -35,7 +38,7 @@ class JoshActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityJoshBinding.inflate(layoutInflater)
+        binding = ActivityChingariBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         loadFragment()
         onClick()
@@ -55,7 +58,7 @@ class JoshActivity : BaseActivity() {
                 gotoActivity(DownloadActivity::class.java, false)
             }
             btnDownload.onSingleClick {
-                if (binding?.etUrl?.isNotEmpty(this@JoshActivity) == true) {
+                if (binding?.etUrl?.isNotEmpty(this@ChingariActivity) == true) {
                     downloadFile(binding?.etUrl?.text.toString())
                 }
             }
@@ -64,7 +67,7 @@ class JoshActivity : BaseActivity() {
 
     private fun loadFragment() {
         fileListFragment = FileListFragment.getInstance(
-            getJoshPath(),
+            getChingariPath(),
             false
         )
         fileListFragment?.let { fragment ->
@@ -81,20 +84,16 @@ class JoshActivity : BaseActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             val myDoc = Jsoup.connect(url).get()
             val result =
-                myDoc.select("script[id=\"__NEXT_DATA__\"]").last()?.html() ?: ""
-            val jsonObject = JSONObject(url)
-            val vidUrl = jsonObject.getJSONObject("props")
-                .getJSONObject("pageProps").getJSONObject("detail")
-                .getJSONObject("data").getString("mp4_url").toString()
+                myDoc.select("meta[property=\"og:video:secure_url\"]").last()?.attr("content")?:""
             withContext(Dispatchers.Main)
             {
                 hideLoadingDialog()
-                if (vidUrl.isNotEmpty()) {
-                    this@JoshActivity.showDownloadDialog(
-                        folderPath = getJoshPath(),
+                if (result.isNotEmpty()) {
+                    this@ChingariActivity.showDownloadDialog(
+                        folderPath = getChingariPath(),
                         filePath = result
                     ) {
-                        viewModel.fetchDownloads(getJoshPath())
+                        viewModel.fetchDownloads(getChingariPath())
                     }
                 } else {
                     showToast("Download Failed")

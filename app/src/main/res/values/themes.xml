@@ -1,5 +1,5 @@
 <resources>
-    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="SplashTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
@@ -8,7 +8,7 @@
     </style>
 
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/colorMain</item>
         <item name="colorPrimaryVariant">@color/colorMain</item>
         <item name="colorOnPrimary">@color/colorCommon</item>
@@ -17,6 +17,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+
     </style>
 
 
