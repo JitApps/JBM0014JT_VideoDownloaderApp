@@ -94,7 +94,7 @@ class JoshActivity : BaseActivity() {
                         folderPath = getJoshPath(),
                         filePath = result
                     ) {
-                        viewModel.fetchDownloads(getJoshPath())
+                        fileListFragment?.viewModel?.fetchDownloads(getJoshPath())
                     }
                 } else {
                     showToast("Download Failed")

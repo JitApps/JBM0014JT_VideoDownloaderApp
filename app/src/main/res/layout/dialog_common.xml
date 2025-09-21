@@ -5,13 +5,12 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.kraaft.video.manager.views.RoundedLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/_10sdp"
-        android:background="@drawable/bg_round_shape_20"
-        android:backgroundTint="@color/colorWhite"
+        app:cornerAll="20dp"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -78,6 +77,6 @@
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.kraaft.video.manager.views.RoundedLayout>
 
 </FrameLayout>

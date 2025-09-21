@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="button_height">@dimen/_40sdp</dimen>
-    <dimen name="toolbar_height">@dimen/_45sdp</dimen>
+    <dimen name="toolbar_height">@dimen/_40sdp</dimen>
+
+    <dimen name="corner_size">20dp</dimen>
 </resources>

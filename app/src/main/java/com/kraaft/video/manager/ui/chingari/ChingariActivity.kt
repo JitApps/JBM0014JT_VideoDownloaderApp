@@ -93,7 +93,7 @@ class ChingariActivity : BaseActivity() {
                         folderPath = getChingariPath(),
                         filePath = result
                     ) {
-                        viewModel.fetchDownloads(getChingariPath())
+                        fileListFragment?.viewModel?.fetchDownloads(getChingariPath())
                     }
                 } else {
                     showToast("Download Failed")

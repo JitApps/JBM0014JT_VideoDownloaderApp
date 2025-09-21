@@ -58,6 +58,7 @@ class DownloadActivity : BaseActivity() {
                         addFragment(fragment, tabList[index])
                     }
                 }
+                offscreenPageLimit = 3
             }
             TabLayoutMediator(it.tabRS, it.viewPager) { tab, position ->
                 tab.text = tabList[position]

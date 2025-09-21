@@ -74,7 +74,7 @@
                 android:id="@+id/ivPaste"
                 android:layout_width="@dimen/toolbar_height"
                 android:layout_height="@dimen/toolbar_height"
-                android:padding="@dimen/_15sdp"
+                android:padding="@dimen/_12sdp"
                 android:src="@drawable/ic_paste"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -125,19 +125,20 @@
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.kraaft.video.manager.views.RoundedLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_40sdp"
-            android:layout_marginBottom="@dimen/_minus20sdp"
-            android:background="@drawable/bg_round_shape_50"
+            android:background="@color/colorWhite"
+            app:cornerLeftTop="@dimen/corner_size"
+            app:cornerRightTop="@dimen/corner_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llButtons">
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="match_parent" />
+        </com.kraaft.video.manager.views.RoundedLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,15 +22,14 @@
             android:id="@+id/cvTab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorMain"
             android:paddingHorizontal="@dimen/_20sdp"
-            android:paddingBottom="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_10sdp"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabRS"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:background="@android:color/transparent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabBackground="@drawable/bg_tab_background"
@@ -41,15 +40,25 @@
                 app:tabRippleColor="@null"
                 app:tabSelectedTextColor="@color/colorTitle"
                 app:tabTextAppearance="@style/tabTextStyle"
-                app:tabTextColor="@color/colorWhite" />
+                app:tabTextColor="@color/colorTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
+        <com.kraaft.video.manager.views.RoundedLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/colorWhite"
+            app:cornerLeftTop="@dimen/corner_size"
+            app:cornerRightTop="@dimen/corner_size"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cvTab" />
+            app:layout_constraintTop_toBottomOf="@id/cvTab">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.kraaft.video.manager.views.RoundedLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
