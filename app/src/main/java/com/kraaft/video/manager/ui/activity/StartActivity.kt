@@ -1,14 +1,9 @@
-package com.kraaft.video.manager.ui.start
+package com.kraaft.video.manager.ui.activity
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.kraaft.video.manager.databinding.ActivityStartBinding
 import com.kraaft.video.manager.ui.base.BaseActivity
-import com.kraaft.video.manager.ui.main.MainActivity
 import com.kraaft.video.manager.utils.delayTask
 import com.kraaft.video.manager.utils.gotoActivity
 

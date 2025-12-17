@@ -10,8 +10,8 @@
     <color name="colorBlack">#FF000000</color>
     <color name="colorWhite">#FFFFFFFF</color>
 
-    <color name="colorBackground">#F8F8F8</color>
-    <color name="colorTitle">#282828</color>
+    <color name="colorBackground">@color/colorBlack</color>
+    <color name="colorTitle">#FFFFFF</color>
     <color name="colorSubTitle">#727272</color>
 
     <color name="colorDark">#464646</color>

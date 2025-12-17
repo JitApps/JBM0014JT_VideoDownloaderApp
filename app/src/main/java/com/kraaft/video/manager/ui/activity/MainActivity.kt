@@ -1,16 +1,11 @@
-package com.kraaft.video.manager.ui.main
+package com.kraaft.video.manager.ui.activity
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.kraaft.video.manager.databinding.ActivityMainBinding
 import com.kraaft.video.manager.ui.base.BaseActivity
-import com.kraaft.video.manager.ui.chingari.ChingariActivity
-import com.kraaft.video.manager.ui.josh.JoshActivity
-import com.kraaft.video.manager.ui.status.StatusActivity
 import com.kraaft.video.manager.utils.gotoActivity
 import com.kraaft.video.manager.utils.onSingleClick
+import kotlin.jvm.java
 
 class MainActivity : BaseActivity() {
 
@@ -30,16 +25,16 @@ class MainActivity : BaseActivity() {
 
     private fun onClick() {
         binding?.apply {
-            btnApp.onSingleClick {
+            btnStatus.onSingleClick {
                 gotoActivity(StatusActivity::class.java, false)
             }
 
-            btnChingari.onSingleClick {
-                gotoActivity(ChingariActivity::class.java, false)
+            btnDownloader.onSingleClick {
+                gotoActivity(HomeActivity::class.java, false)
             }
 
-            btnJosh.onSingleClick {
-                gotoActivity(JoshActivity::class.java, false)
+            btnDownloads.onSingleClick {
+                gotoActivity(DownloadActivity::class.java, false)
             }
         }
     }

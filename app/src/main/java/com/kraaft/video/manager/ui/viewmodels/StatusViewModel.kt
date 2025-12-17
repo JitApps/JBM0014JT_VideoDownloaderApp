@@ -1,4 +1,4 @@
-package com.kraaft.video.manager.ui.common
+package com.kraaft.video.manager.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -26,4 +26,13 @@
     <string name="download">Download</string>
 
     <string name="paste_download_link">Paste Link to Download Video or Image</string>
+    <string name="downloaded_media">Downloaded Media</string>
+    <string name="how_to_download">How to Download ?</string>
+    <string name="wa_status">WA Status</string>
+    <string name="music_player">Music Player</string>
+    <string name="video_player">Video Player</string>
+    <string name="video_downloader">Video Downloader</string>
+    <string name="chingari">Chingari</string>
+    <string name="josh">Josh</string>
+    <string name="paste">Paste</string>
 </resources>

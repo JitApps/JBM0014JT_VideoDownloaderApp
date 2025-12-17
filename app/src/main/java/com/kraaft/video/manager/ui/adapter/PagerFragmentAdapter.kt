@@ -1,4 +1,4 @@
-package com.kraaft.driver.manager.ui.main
+package com.kraaft.video.manager.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

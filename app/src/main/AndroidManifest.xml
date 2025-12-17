@@ -34,29 +34,32 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.chingari.ChingariActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
+            android:name=".ui.activity.HomeActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.activity.GlobalActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.josh.JoshActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.downloads.DownloadActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name=".ui.status.StatusActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.activity.DownloadActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.start.StartActivity"
+            android:name=".ui.activity.StatusActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.StartActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">

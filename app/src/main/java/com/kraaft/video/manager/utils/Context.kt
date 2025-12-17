@@ -17,6 +17,7 @@ import com.kraaft.video.manager.model.NetworkResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
@@ -35,18 +36,9 @@ fun getWhatsPath(): String {
 }
 
 
-fun getChingariPath(): String {
+fun getDownloadsPath(): String {
     val folderPath =
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Chingari"
-    if (!File(folderPath).exists()) {
-        File(folderPath).mkdirs()
-    }
-    return folderPath
-}
-
-fun getJoshPath(): String {
-    val folderPath =
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Josh"
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Other"
     if (!File(folderPath).exists()) {
         File(folderPath).mkdirs()
     }
@@ -69,17 +61,17 @@ fun getBusinessFolder(): String {
     }
 }
 
-fun Activity.gotoActivity(activityClass: Class<*>?, isFinish: Boolean) {
-    sendIntent(this, Intent(this, activityClass), isFinish)
+fun Activity.gotoActivity(activityClass: Class<*>, isFinish: Boolean) {
+    sendIntent(Intent(this, activityClass), isFinish)
 }
 
-fun Activity.gotoIntent(intent: Intent?, isFinish: Boolean) {
-    sendIntent(this, intent, isFinish)
+fun Activity.gotoIntent(intent: Intent, isFinish: Boolean) {
+    sendIntent( intent, isFinish)
 }
 
-fun sendIntent(activity: Activity, intent: Intent?, isFinish: Boolean) {
-    activity.startActivity(intent)
-    if (isFinish) activity.finish()
+private fun Activity.sendIntent( intent: Intent, isFinish: Boolean) {
+    startActivity(intent)
+    if (isFinish) finish()
 }
 
 fun delayTask(timer: Long = 2000, action: () -> Unit) {
@@ -101,34 +93,24 @@ fun showLog(text: String = "log") {
     }
 }
 
-fun Context.handleResponse(
+suspend fun Context.handleResponse(
     response: Response<ResponseBody>,
-    data: MutableLiveData<NetworkResult<ResponseBody>>
+    data: MutableStateFlow<NetworkResult<ResponseBody>>
 ) {
-    if (response.isSuccessful && response.body() != null) {
-        data.postValue(NetworkResult.Success(response.body()!!))
-    } else if (response.errorBody() != null) {
-        try {
-            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
-            data.postValue(NetworkResult.Error(errorObj.getString("message")))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            data.postValue(NetworkResult.Error(resources.getString(R.string.kk_error_unknown)))
-        }
-    } else {
-        data.postValue(NetworkResult.Error(resources.getString(R.string.kk_error_unknown)))
+    response.body()?.let {
+        data.emit(NetworkResult.Success(it))
+    } ?: response.errorBody()?.let {
+        val jsonObject = JSONObject(it.toString())
+        data.emit(
+            NetworkResult.Error(
+                jsonObject.optString("message")
+                    .ifEmpty {
+                        resources.getString(R.string.kk_error_unknown)
+                    })
+        )
+    } ?: run {
+        data.emit(NetworkResult.Error(resources.getString(R.string.kk_error_unknown)))
     }
-}
-
-fun View.onSingleClick(debounceTime: Long = 1500, action: () -> Unit) {
-    this.setOnClickListener(object : View.OnClickListener {
-        private var lastClickTime: Long = 0
-        override fun onClick(v: View) {
-            if (SystemClock.elapsedRealtime() - lastClickTime < debounceTime) return
-            else action()
-            lastClickTime = SystemClock.elapsedRealtime()
-        }
-    })
 }
 
 fun Context.getProgressImage(): CircularProgressDrawable {
@@ -150,4 +132,5 @@ fun Context.isPackageInstalled(packageName: String): Boolean {
         return false
     }
 }
+
 

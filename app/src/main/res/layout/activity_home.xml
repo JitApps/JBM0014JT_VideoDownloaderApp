@@ -18,37 +18,13 @@
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:orientation="vertical"
-        app:constraint_referenced_ids="btnDownloader,btnVideoPlayer,btnMusicPlayer,btnStatus,btnDownloads,btnHowTo"
+        app:constraint_referenced_ids="btnStatus,btnChingari,btnJosh"
         app:flow_verticalAlign="center"
         app:flow_verticalGap="@dimen/_15sdp"
         app:flow_verticalStyle="packed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/includedToolbar" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDownloader"
-        style="@style/txtNormalButton"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/button_height"
-        android:text="@string/video_downloader"
-        android:theme="@android:style/ThemeOverlay.Material.Dark" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnVideoPlayer"
-        style="@style/txtNormalButton"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/button_height"
-        android:text="@string/video_player"
-        android:theme="@android:style/ThemeOverlay.Material.Dark" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnMusicPlayer"
-        style="@style/txtNormalButton"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/button_height"
-        android:text="@string/music_player"
-        android:theme="@android:style/ThemeOverlay.Material.Dark" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnStatus"
@@ -59,19 +35,19 @@
         android:theme="@android:style/ThemeOverlay.Material.Dark" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDownloads"
+        android:id="@+id/btnChingari"
         style="@style/txtNormalButton"
         android:layout_width="0dp"
         android:layout_height="@dimen/button_height"
-        android:text="@string/downloaded_media"
+        android:text="@string/chingari"
         android:theme="@android:style/ThemeOverlay.Material.Dark" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnHowTo"
+        android:id="@+id/btnJosh"
         style="@style/txtNormalButton"
         android:layout_width="0dp"
         android:layout_height="@dimen/button_height"
-        android:text="@string/how_to_download"
+        android:text="@string/josh"
         android:theme="@android:style/ThemeOverlay.Material.Dark" />
 
 

@@ -37,6 +37,7 @@ fun LayoutErrorBinding.showLoading(cvMain: ConstraintLayout) {
     cvLoading.visibility = View.VISIBLE
     cvMain.visibility = View.GONE
     cvError.visibility = View.GONE
+    btnRetry.isVisible = false
 }
 
 fun LayoutErrorBinding.showError(

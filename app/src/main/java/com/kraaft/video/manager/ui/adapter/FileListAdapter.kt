@@ -1,4 +1,4 @@
-package com.kraaft.video.manager.ui.files
+package com.kraaft.video.manager.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -1,29 +1,27 @@
-package com.kraaft.video.manager.ui.files
+package com.kraaft.video.manager.ui.fragment
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Build.VERSION
 import android.os.Bundle
 import android.os.storage.StorageManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.florent37.inlineactivityresult.InlineActivityResult
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.FragmentFileListBinding
 import com.kraaft.video.manager.model.FileModel
+import com.kraaft.video.manager.ui.adapter.FileListAdapter
 import com.kraaft.video.manager.ui.base.BaseFragment
-import com.kraaft.video.manager.ui.common.StatusViewModel
+import com.kraaft.video.manager.ui.viewmodels.StatusViewModel
 import com.kraaft.video.manager.utils.PreferenceClass
 import com.kraaft.video.manager.utils.getBusinessFolder
 import com.kraaft.video.manager.utils.getStatusFolder
@@ -34,7 +32,6 @@ import com.kraaft.video.manager.utils.showPage
 import dagger.hilt.android.AndroidEntryPoint
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class FileListFragment : BaseFragment() {
@@ -108,7 +105,7 @@ class FileListFragment : BaseFragment() {
 
             }
             binding?.apply {
-                rvFiles.layoutManager = StaggeredGridLayoutManager(3, VERTICAL)
+                rvFiles.layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
                 rvFiles.adapter = fileListAdapter
             }
         }
@@ -117,7 +114,7 @@ class FileListFragment : BaseFragment() {
 
     private fun checkForPermissions() {
         if (isStatus) {
-            if (VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
                 if (folderPath.endsWith(getStatusFolder()) && (preferenceClass.getString("w_path")
                         .endsWith(getStatusFolder()) || appContext?.isPackageInstalled("com.whatsapp") == false)
                 ) {

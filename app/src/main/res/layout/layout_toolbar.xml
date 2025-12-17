@@ -2,38 +2,37 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/colorWhite"
-    android:elevation="5dp"
-    android:layout_height="@dimen/toolbar_height">
+    android:layout_height="@dimen/toolbar_height"
+    android:background="@color/colorCommon"
+    android:elevation="5dp">
 
     <ImageView
         android:id="@+id/btnBack"
+        android:visibility="gone"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
         android:padding="@dimen/_10sdp"
-        app:tint="@color/colorTitle"
         android:src="@drawable/ic_back_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorTitle" />
 
     <TextView
         android:id="@+id/txtTitle"
         style="@style/fontSemiBold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center|start"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:text="@string/app_name"
         android:textColor="@color/colorTitle"
-        android:textSize="@dimen/_12ssp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnBack"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="@dimen/_12ssp" />
 
     <ImageView
         android:id="@+id/btnLogo"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
+        android:visibility="gone"
         android:padding="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

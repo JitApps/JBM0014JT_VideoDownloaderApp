@@ -1,19 +1,17 @@
-package com.kraaft.video.manager.ui.chingari
+package com.kraaft.video.manager.ui.activity
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.kraaft.driver.manager.ui.main.PagerFragmentAdapter
 import com.kraaft.video.manager.R
-import com.kraaft.video.manager.databinding.ActivityChingariBinding
+import com.kraaft.video.manager.databinding.ActivityGlobalBinding
+import com.kraaft.video.manager.ui.adapter.PagerFragmentAdapter
 import com.kraaft.video.manager.ui.base.BaseActivity
-import com.kraaft.video.manager.ui.common.StatusViewModel
-import com.kraaft.video.manager.ui.downloads.DownloadActivity
-import com.kraaft.video.manager.ui.files.FileListFragment
-import com.kraaft.video.manager.utils.downloadFile
-import com.kraaft.video.manager.utils.getChingariPath
+import com.kraaft.video.manager.ui.fragment.FileListFragment
+import com.kraaft.video.manager.ui.viewmodels.StatusViewModel
+import com.kraaft.video.manager.utils.beVisible
+import com.kraaft.video.manager.utils.getDownloadsPath
 import com.kraaft.video.manager.utils.gotoActivity
 import com.kraaft.video.manager.utils.isNotEmpty
 import com.kraaft.video.manager.utils.onSingleClick
@@ -24,12 +22,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 
-class ChingariActivity : BaseActivity() {
+class GlobalActivity : BaseActivity() {
 
-    private var binding: ActivityChingariBinding? = null
+    private var binding: ActivityGlobalBinding? = null
     private var fileListFragment: FileListFragment? = null
 
     private val viewModel: StatusViewModel by viewModels()
+    private var downloadType = ""
 
     override fun onDestroy() {
         super.onDestroy()
@@ -38,10 +37,19 @@ class ChingariActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityChingariBinding.inflate(layoutInflater)
+        binding = ActivityGlobalBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        loadFragment()
+        getIntentData()
         onClick()
+    }
+
+    fun getIntentData() {
+        downloadType = intent.getStringExtra("download") ?: ""
+        when (downloadType) {
+            "josh" -> binding?.ivLogo?.setImageResource(R.drawable.icon_josh)
+            "chingari" -> binding?.ivLogo?.setImageResource(R.drawable.icon_chingari)
+            else -> binding?.ivLogo?.setImageResource(R.drawable.start_logo)
+        }
     }
 
     private fun onClick() {
@@ -51,14 +59,12 @@ class ChingariActivity : BaseActivity() {
             }
         })
         binding?.apply {
+            includedToolbar.btnBack.beVisible()
             includedToolbar.btnBack.onSingleClick {
                 onBackPressedDispatcher.onBackPressed()
             }
-            btnGallery.onSingleClick {
-                gotoActivity(DownloadActivity::class.java, false)
-            }
             btnDownload.onSingleClick {
-                if (binding?.etUrl?.isNotEmpty(this@ChingariActivity) == true) {
+                if (binding?.etUrl?.isNotEmpty(this@GlobalActivity) == true) {
                     downloadFile(binding?.etUrl?.text.toString())
                 }
             }
@@ -66,8 +72,8 @@ class ChingariActivity : BaseActivity() {
     }
 
     private fun loadFragment() {
-        fileListFragment = FileListFragment.getInstance(
-            getChingariPath(),
+        fileListFragment = FileListFragment.Companion.getInstance(
+            getDownloadsPath(),
             false
         )
         fileListFragment?.let { fragment ->
@@ -84,16 +90,16 @@ class ChingariActivity : BaseActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             val myDoc = Jsoup.connect(url).get()
             val result =
-                myDoc.select("meta[property=\"og:video:secure_url\"]").last()?.attr("content")?:""
+                myDoc.select("meta[property=\"og:video:secure_url\"]").last()?.attr("content") ?: ""
             withContext(Dispatchers.Main)
             {
                 hideLoadingDialog()
                 if (result.isNotEmpty()) {
-                    this@ChingariActivity.showDownloadDialog(
-                        folderPath = getChingariPath(),
+                    this@GlobalActivity.showDownloadDialog(
+                        folderPath = getDownloadsPath(),
                         filePath = result
                     ) {
-                        fileListFragment?.viewModel?.fetchDownloads(getChingariPath())
+                        fileListFragment?.viewModel?.fetchDownloads(getDownloadsPath())
                     }
                 } else {
                     showToast("Download Failed")

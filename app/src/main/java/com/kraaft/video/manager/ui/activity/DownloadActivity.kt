@@ -1,21 +1,16 @@
-package com.kraaft.video.manager.ui.downloads
+package com.kraaft.video.manager.ui.activity
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.enableEdgeToEdge
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
-import com.kraaft.driver.manager.ui.main.PagerFragmentAdapter
 import com.kraaft.video.manager.databinding.ActivityDownloadBinding
-import com.kraaft.video.manager.databinding.ActivityStatusBinding
+import com.kraaft.video.manager.ui.adapter.PagerFragmentAdapter
 import com.kraaft.video.manager.ui.base.BaseActivity
-import com.kraaft.video.manager.ui.files.FileListFragment
-import com.kraaft.video.manager.utils.getBusinessFolder
-import com.kraaft.video.manager.utils.getChingariPath
-import com.kraaft.video.manager.utils.getJoshPath
-import com.kraaft.video.manager.utils.getStatusFolder
+import com.kraaft.video.manager.ui.fragment.FileListFragment
+import com.kraaft.video.manager.utils.beVisible
+import com.kraaft.video.manager.utils.getDownloadsPath
 import com.kraaft.video.manager.utils.getWhatsPath
 import com.kraaft.video.manager.utils.onSingleClick
 
@@ -42,6 +37,7 @@ class DownloadActivity : BaseActivity() {
                 finish()
             }
         })
+        binding?.includedToolbar?.btnBack?.beVisible()
         binding?.includedToolbar?.btnBack?.onSingleClick {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -49,7 +45,7 @@ class DownloadActivity : BaseActivity() {
 
     private fun setViewPager() {
         val tabList = listOf(
-            "Whatsapp", "Chingari", "Josh"
+            "Whatsapp", "Downloads"
         )
         binding?.let {
             it.viewPager.apply {
@@ -58,7 +54,7 @@ class DownloadActivity : BaseActivity() {
                         addFragment(fragment, tabList[index])
                     }
                 }
-                offscreenPageLimit = 3
+                offscreenPageLimit = 2
             }
             TabLayoutMediator(it.tabRS, it.viewPager) { tab, position ->
                 tab.text = tabList[position]
@@ -69,9 +65,8 @@ class DownloadActivity : BaseActivity() {
 
     private fun loadFragments(): List<Fragment> {
         return listOf<Fragment>(
-            FileListFragment.getInstance(getWhatsPath(), false),
-            FileListFragment.getInstance(getChingariPath(), false),
-            FileListFragment.getInstance(getJoshPath(), false)
+            FileListFragment.Companion.getInstance(getWhatsPath(), false),
+            FileListFragment.Companion.getInstance(getDownloadsPath(), false)
         )
     }
 }

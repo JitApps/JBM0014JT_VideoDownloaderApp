@@ -5,8 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    tools:context=".ui.josh.JoshActivity">
+    android:background="@color/colorBackground">
 
     <include
         android:id="@+id/includedToolbar"
@@ -25,7 +24,7 @@
             android:layout_height="@dimen/_100sdp"
             android:layout_margin="@dimen/_20sdp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/icon_josh"
+            android:src="@drawable/icon_chingari"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_30sdp"
             android:gravity="center"
             android:text="@string/paste_download_link"
             android:textSize="@dimen/_14ssp"
@@ -55,7 +54,7 @@
             <EditText
                 android:id="@+id/etUrl"
                 style="@style/fontMedium"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:autofillHints="password"
                 android:background="@null"
@@ -65,19 +64,8 @@
                 android:textColor="@color/colorTitle"
                 android:textColorHint="@color/colorTitle"
                 android:textSize="@dimen/_14ssp"
-                app:layout_constraintEnd_toStartOf="@+id/ivPaste"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="RtlSymmetry" />
-
-            <ImageView
-                android:id="@+id/ivPaste"
-                android:layout_width="@dimen/toolbar_height"
-                android:layout_height="@dimen/toolbar_height"
-                android:padding="@dimen/_12sdp"
-                android:src="@drawable/ic_paste"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -92,7 +80,7 @@
             app:layout_constraintTop_toBottomOf="@id/cvEditBox">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGallery"
+                android:id="@+id/btnPaste"
                 style="@style/txtNormalButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -100,7 +88,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorCommon"
                 android:gravity="center"
-                android:text="@string/gallery"
+                android:text="@string/paste"
                 android:textColor="@color/colorTitle"
                 android:theme="@android:style/ThemeOverlay.Material.Dark"
                 app:icon="@drawable/ic_gallery"
@@ -128,6 +116,7 @@
         <com.kraaft.video.manager.views.RoundedLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/_40sdp"
             android:background="@color/colorWhite"
             app:cornerLeftTop="@dimen/corner_size"
@@ -135,12 +124,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llButtons">
 
-
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
         </com.kraaft.video.manager.views.RoundedLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

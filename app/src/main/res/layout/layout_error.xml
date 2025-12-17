@@ -78,14 +78,14 @@
             android:paddingTop="@dimen/_15sdp"
             android:paddingBottom="@dimen/_25sdp"
             android:text="@string/kk_error_no_data"
-            android:textColor="@color/colorTitle"
-            android:textSize="@dimen/_15ssp" />
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12ssp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRetry"
             style="@style/txtNormalButton"
             android:visibility="gone"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/button_height"
             android:text="@string/kk_retry" />
 
