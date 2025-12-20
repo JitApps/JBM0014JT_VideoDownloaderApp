@@ -4,4 +4,5 @@
     <dimen name="toolbar_height">@dimen/_40sdp</dimen>
 
     <dimen name="corner_size">20dp</dimen>
+    <dimen name="item_margin">@dimen/_10sdp</dimen>
 </resources>

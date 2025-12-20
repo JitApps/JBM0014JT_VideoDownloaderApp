@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/clickEffect"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_80sdp"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_10sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.kraaft.video.manager.views.RoundedLayout
+            android:id="@+id/cvAlbum"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/_65sdp"
+            app:cornerAll="10dp">
+
+            <ImageView
+                android:id="@+id/ivAlbum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/ivAlbumLayer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                android:src="#4d000000" />
+
+        </com.kraaft.video.manager.views.RoundedLayout>
+
+        <TextView
+            android:id="@+id/tvName"
+            style="@style/fontSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_22sdp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:minWidth="@dimen/_80sdp"
+            android:text="All Photos"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/album_size"
+            app:layout_constraintEnd_toEndOf="@+id/cvAlbum" />
+
+        <TextView
+            android:id="@+id/album_size"
+            style="@style/fontNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_22sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:gravity="end"
+            android:minWidth="@dimen/_80sdp"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cvAlbum" />
+
+
+        <ImageView
+            android:id="@+id/album_arrow"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_minus15sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_album_arrow"
+            app:layout_constraintBottom_toBottomOf="@+id/album_size"
+            app:layout_constraintStart_toEndOf="@+id/cvAlbum"
+            app:layout_constraintTop_toTopOf="@+id/album_size" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

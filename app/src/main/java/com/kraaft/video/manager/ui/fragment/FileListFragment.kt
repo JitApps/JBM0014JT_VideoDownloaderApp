@@ -19,6 +19,7 @@ import com.github.florent37.inlineactivityresult.InlineActivityResult
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.FragmentFileListBinding
 import com.kraaft.video.manager.model.FileModel
+import com.kraaft.video.manager.model.UiState
 import com.kraaft.video.manager.ui.adapter.FileListAdapter
 import com.kraaft.video.manager.ui.base.BaseFragment
 import com.kraaft.video.manager.ui.viewmodels.StatusViewModel
@@ -58,11 +59,6 @@ class FileListFragment : BaseFragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        context.setMainContext()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         folderPath = arguments?.getString("folderPath", "") ?: ""
@@ -91,16 +87,36 @@ class FileListFragment : BaseFragment() {
 
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.statusData.collect { newList ->
-                newList?.let {
-                    refreshData(it)
+            viewModel.statusData.collect { uiState ->
+                uiState?.let {
+                    when (uiState) {
+
+                        is UiState.Loading -> {
+                            binding?.let {
+                                it.includedError.showLoading(it.cvMain)
+                            }
+                        }
+
+                        is UiState.Success -> {
+                            refreshData(uiState.data)
+                        }
+
+                        is UiState.Error -> {
+                            showErrorOrEmpty(uiState.message)
+                        }
+
+                        is UiState.Empty -> {
+                            showErrorOrEmpty()
+                        }
+                    }
+
                 }
             }
         }
     }
 
     private fun setAdapter() {
-        appContext?.let {
+        context?.let {
             fileListAdapter = FileListAdapter(it) { item, pos ->
 
             }
@@ -109,26 +125,25 @@ class FileListFragment : BaseFragment() {
                 rvFiles.adapter = fileListAdapter
             }
         }
-
     }
 
     private fun checkForPermissions() {
         if (isStatus) {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
                 if (folderPath.endsWith(getStatusFolder()) && (preferenceClass.getString("w_path")
-                        .endsWith(getStatusFolder()) || appContext?.isPackageInstalled("com.whatsapp") == false)
+                        .endsWith(getStatusFolder()) || context?.isPackageInstalled("com.whatsapp") == false)
                 ) {
-                    if (appContext?.isPackageInstalled("com.whatsapp") == false)
-                        refreshData(listOf())
+                    if (context?.isPackageInstalled("com.whatsapp") == false)
+                        showErrorOrEmpty()
                     else
                         startFetchingData()
                 } else if (folderPath.endsWith(getBusinessFolder()) && (preferenceClass.getString(
                         "wb_path"
                     )
-                        .endsWith(getBusinessFolder()) || appContext?.isPackageInstalled("com.whatsapp.w4b") == false)
+                        .endsWith(getBusinessFolder()) || context?.isPackageInstalled("com.whatsapp.w4b") == false)
                 ) {
-                    if (appContext?.isPackageInstalled("com.whatsapp.w4b") == false)
-                        refreshData(listOf())
+                    if (context?.isPackageInstalled("com.whatsapp.w4b") == false)
+                        showErrorOrEmpty()
                     else
                         startFetchingData()
                 } else {
@@ -152,9 +167,6 @@ class FileListFragment : BaseFragment() {
     }
 
     private fun startFetchingData() {
-        binding?.let {
-            it.includedError.showLoading(it.cvMain)
-        }
         if (isStatus) {
             viewModel.fetchStatus(
                 if (folderPath.endsWith(getStatusFolder())) preferenceClass.getString(
@@ -168,20 +180,22 @@ class FileListFragment : BaseFragment() {
         }
     }
 
+    fun showErrorOrEmpty(message: String = getString(R.string.kk_error_no_data)) {
+        binding?.let {
+            it.includedError.showError(message, it.cvMain)
+        }
+    }
+
     private fun refreshData(newList: List<FileModel>) {
         fileListAdapter?.refreshData(newList.toMutableList())
-        binding?.apply {
-            if ((fileListAdapter?.itemCount ?: 0) > 0) {
-                includedError.showPage(cvMain)
-            } else {
-                includedError.showError(getString(R.string.kk_error_no_data), cvMain)
-            }
+        binding?.let {
+            it.includedError.showPage(it.cvMain)
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun getFolderPermission() {
-        val manager = appContext?.getSystemService(Context.STORAGE_SERVICE) as StorageManager
+        val manager = context?.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         val intent = manager.primaryStorageVolume.createOpenDocumentTreeIntent()
         var uri = intent.getParcelableExtra<Uri>("android.provider.extra.INITIAL_URI")
         var scheme = uri.toString().replace("/root/", "/document/")
@@ -195,7 +209,7 @@ class FileListFragment : BaseFragment() {
                 result.data?.data?.also { uri ->
                     if (uri.toString().endsWith(getStatusFolder())) {
                         preferenceClass.setString("w_path", uri.toString())
-                        appContext?.apply {
+                        context?.apply {
                             contentResolver.takePersistableUriPermission(
                                 uri,
                                 Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
@@ -203,7 +217,7 @@ class FileListFragment : BaseFragment() {
                         }
                     } else if (uri.toString().endsWith(getBusinessFolder())) {
                         preferenceClass.setString("wb_path", uri.toString())
-                        appContext?.apply {
+                        context?.apply {
                             contentResolver.takePersistableUriPermission(
                                 uri,
                                 Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION

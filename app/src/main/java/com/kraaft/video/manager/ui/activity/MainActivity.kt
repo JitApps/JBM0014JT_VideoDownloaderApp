@@ -3,6 +3,8 @@ package com.kraaft.video.manager.ui.activity
 import android.os.Bundle
 import com.kraaft.video.manager.databinding.ActivityMainBinding
 import com.kraaft.video.manager.ui.base.BaseActivity
+import com.kraaft.video.manager.utils.PERMISSION_VIDEO
+import com.kraaft.video.manager.utils.askPermissions
 import com.kraaft.video.manager.utils.gotoActivity
 import com.kraaft.video.manager.utils.onSingleClick
 import kotlin.jvm.java
@@ -35,6 +37,12 @@ class MainActivity : BaseActivity() {
 
             btnDownloads.onSingleClick {
                 gotoActivity(DownloadActivity::class.java, false)
+            }
+
+            btnVideoPlayer.onSingleClick {
+                askPermissions(listOf(PERMISSION_VIDEO)) {
+                    gotoActivity(MediaListActivity::class.java, false)
+                }
             }
         }
     }

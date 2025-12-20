@@ -1,4 +1,4 @@
-package com.kraaft.video.manager.sync
+package com.kraaft.video.manager.data.sync
 
 import android.R.attr.path
 import android.content.Context

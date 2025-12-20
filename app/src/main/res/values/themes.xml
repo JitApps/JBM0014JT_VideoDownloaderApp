@@ -123,4 +123,10 @@
         <attr name="cornerAll" format="dimension"/>
     </declare-styleable>
 
+
+    <style name="clickEffect">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+    </style>
 </resources>

@@ -15,10 +15,9 @@ import dagger.hilt.android.AndroidEntryPoint
 abstract class BaseFragment : Fragment() {
 
     private var loaderDialog: Dialog? = null
-    var appContext: Context? = null
 
     private fun initDialog() {
-        appContext?.let {
+        context?.let {
             loaderDialog = Dialog(it, R.style.NormalDialog)
             val loadingBinding: DialogLoadingBinding = DialogLoadingBinding.inflate(layoutInflater)
             loaderDialog?.let { dialog ->
@@ -45,11 +44,6 @@ abstract class BaseFragment : Fragment() {
                 it.dismiss()
         }
     }
-
-    fun Context.setMainContext() {
-        appContext = this
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

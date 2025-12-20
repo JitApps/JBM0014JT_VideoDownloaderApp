@@ -8,19 +8,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kraaft.video.manager.R
-import com.kraaft.video.manager.databinding.ItemFileBinding
-import com.kraaft.video.manager.model.FileModel
+import com.kraaft.video.manager.databinding.ItemVideoBinding
+import com.kraaft.video.manager.model.VideoFile
+import com.kraaft.video.manager.ui.adapter.VideoListAdapter.VideoHolder
 import com.kraaft.video.manager.utils.DiffCallback
 import com.kraaft.video.manager.utils.onSingleClick
 
-class FileListAdapter(val context: Context, val onClickListener: (FileModel, Int) -> Unit) :
-    RecyclerView.Adapter<FileListAdapter.FileHolder>() {
+class VideoListAdapter(val context: Context, val onClickListener: (VideoFile, Int) -> Unit) :
+    RecyclerView.Adapter<VideoHolder>() {
 
-    private var statusList = mutableListOf<FileModel>()
+    private var statusList = mutableListOf<VideoFile>()
     val height =
-        (context.resources.displayMetrics.widthPixels - context.resources.getDimension(R.dimen.item_margin).toInt()) / 3
+        (context.resources.displayMetrics.widthPixels - context.resources.getDimension(R.dimen.item_margin).toInt()) / 2
 
-    inner class FileHolder(val binding: ItemFileBinding) :
+    inner class VideoHolder(val binding: ItemVideoBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.cvRoot.layoutParams = FrameLayout.LayoutParams(height, height)
@@ -28,12 +29,12 @@ class FileListAdapter(val context: Context, val onClickListener: (FileModel, Int
         }
     }
 
-    fun refreshData(newList: MutableList<FileModel>) {
+    fun refreshData(newList: MutableList<VideoFile>) {
         val diffResult = DiffUtil.calculateDiff(
             DiffCallback(
                 oldList = statusList,
                 newList = newList,
-                areItemsTheSame = { oldItem, newItem -> oldItem.filePath == newItem.filePath }
+                areItemsTheSame = { oldItem, newItem -> oldItem.uri == newItem.uri }
             )
         )
 
@@ -42,15 +43,15 @@ class FileListAdapter(val context: Context, val onClickListener: (FileModel, Int
         diffResult.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileHolder {
-        return FileHolder(ItemFileBinding.inflate(LayoutInflater.from(context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoHolder {
+        return VideoHolder(ItemVideoBinding.inflate(LayoutInflater.from(context), parent, false))
     }
 
     override fun getItemCount(): Int = statusList.size
 
-    override fun onBindViewHolder(holder: FileHolder, position: Int) {
+    override fun onBindViewHolder(holder: VideoHolder, position: Int) {
         holder.binding.apply {
-            Glide.with(context).load(statusList[position].filePath)
+            Glide.with(context).load(statusList[position].uri)
                 .placeholder(R.drawable.image_placeholder)
                 .error(R.drawable.image_placeholder)
                 .into(ivFile)
