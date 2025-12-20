@@ -50,7 +50,7 @@ class MediaListActivity : BaseActivity() {
 
     private fun setViewPager() {
         val tabList = listOf(
-            if (isSound) "Music" else "Videos", "Folder"
+            if (isSound) "Music" else "Videos", "Folder", "PlayList"
         )
         binding?.let {
             it.viewPager.apply {
@@ -70,7 +70,8 @@ class MediaListActivity : BaseActivity() {
     private fun loadFragments(): List<Fragment> {
         return listOf<Fragment>(
             MediaFileFragment.getInstance(isSound),
-            MediaFolderFragment.getInstance(isSound)
+            MediaFolderFragment.getInstance(isSound),
+            MediaFileFragment.getInstance(isSound, true),
         )
     }
 }

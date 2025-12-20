@@ -34,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class FileListFragment : BaseFragment() {
 
     @Inject

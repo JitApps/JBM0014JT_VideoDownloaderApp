@@ -27,21 +27,22 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-@AndroidEntryPoint
 class MediaFileFragment : BaseFragment() {
 
     private var binding: FragmentMediaFileBinding? = null
     private var isSound = false
+    private var isPlayList = false
     private var videoAdapter: VideoListAdapter? = null
     private var audioAdapter: AudioListAdapter? = null
 
     val viewModel: MediaViewModel by viewModels()
 
     companion object {
-        fun getInstance(isSound: Boolean = false): MediaFileFragment {
+        fun getInstance(isSound: Boolean = false, isPlayList: Boolean = false): MediaFileFragment {
             return MediaFileFragment().apply {
                 arguments = Bundle().apply {
                     putBoolean("isSound", isSound)
+                    putBoolean("isPlayList", isPlayList)
                 }
             }
         }
@@ -50,6 +51,7 @@ class MediaFileFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isSound = arguments?.getBoolean("isSound", false) ?: false
+        isPlayList = arguments?.getBoolean("isPlayList", false) ?: false
     }
 
     override fun onCreateView(
@@ -68,14 +70,23 @@ class MediaFileFragment : BaseFragment() {
     }
 
     fun Context.initMusicRv() {
-        audioAdapter = AudioListAdapter(this) { item, position ->
+        audioAdapter = AudioListAdapter(this, onMenuClick = { item, isAdd ->
+            if (isAdd) {
+                viewModel.addToPlaylist(item, "sound")
+            } else {
 
-        }
+            }
+        }, onClickListener = { item, position ->
+
+        })
         binding?.rvMedia?.apply {
             layoutManager = LinearLayoutManager(this@initMusicRv)
             adapter = audioAdapter
         }
-        observeAudioUiState()
+        if (isPlayList) {
+            observePlayUiState()
+        } else
+            observeAudioUiState()
     }
 
     fun Context.initVideoRv() {
@@ -87,6 +98,48 @@ class MediaFileFragment : BaseFragment() {
             adapter = videoAdapter
         }
         observeVideoUiState()
+    }
+
+    private fun observePlayUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.playData.collectLatest { uiState ->
+                uiState?.let {
+                    when (uiState) {
+
+                        is UiState.Loading -> {
+                            binding?.let {
+                                it.includedError.showLoading(it.cvMain)
+                            }
+                        }
+
+                        is UiState.Success -> {
+                            refreshAudioData(
+                                uiState.data.map {
+                                    SoundFile(
+                                        id = it.itemId,
+                                        name = it.name,
+                                        uri = it.uri,
+                                        duration = it.duration,
+                                        size = it.size,
+                                        dateModified = it.dateModified,
+                                    )
+                                }
+                            )
+                        }
+
+                        is UiState.Error -> {
+                            showErrorOrEmpty(uiState.message)
+                        }
+
+                        is UiState.Empty -> {
+                            showErrorOrEmpty()
+                        }
+                    }
+                } ?: run {
+                    viewModel.fetchPlayList(if (isSound) "sound" else "video")
+                }
+            }
+        }
     }
 
     private fun observeVideoUiState() {
@@ -145,7 +198,11 @@ class MediaFileFragment : BaseFragment() {
                         }
                     }
                 } ?: run {
-                    viewModel.fetchSound()
+                    if (isPlayList) {
+                        viewModel.fetchPlayList("sound")
+                    } else {
+                        viewModel.fetchSound()
+                    }
                 }
             }
         }

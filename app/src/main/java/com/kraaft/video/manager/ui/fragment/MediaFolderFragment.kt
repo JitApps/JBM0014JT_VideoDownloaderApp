@@ -32,7 +32,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.getValue
 
-@AndroidEntryPoint
 class MediaFolderFragment : BaseFragment() {
 
     private var binding: FragmentMediaFolderBinding? = null

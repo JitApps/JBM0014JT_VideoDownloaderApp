@@ -5,12 +5,12 @@ import android.view.View
 import android.view.ViewTreeObserver
 
 
-fun View.onSingleClick(debounceTime: Long = 1500, action: () -> Unit) {
+fun View.onSingleClick(debounceTime: Long = 1500, action: (View) -> Unit) {
     this.setOnClickListener(object : View.OnClickListener {
         private var lastClickTime: Long = 0
         override fun onClick(v: View) {
             if (SystemClock.elapsedRealtime() - lastClickTime < debounceTime) return
-            else action()
+            else action(this@onSingleClick)
             lastClickTime = SystemClock.elapsedRealtime()
         }
     })

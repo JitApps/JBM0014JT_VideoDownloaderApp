@@ -6,6 +6,7 @@ import com.kraaft.video.manager.databinding.ActivityStartBinding
 import com.kraaft.video.manager.ui.base.BaseActivity
 import com.kraaft.video.manager.utils.delayTask
 import com.kraaft.video.manager.utils.gotoActivity
+import dagger.hilt.android.AndroidEntryPoint
 
 class StartActivity : BaseActivity() {
 

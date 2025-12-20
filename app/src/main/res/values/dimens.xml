@@ -5,4 +5,6 @@
 
     <dimen name="corner_size">20dp</dimen>
     <dimen name="item_margin">@dimen/_10sdp</dimen>
+    <dimen name="popup_text_size">@dimen/_12ssp</dimen>
+    <dimen name="popup_margin">@dimen/_10sdp</dimen>
 </resources>

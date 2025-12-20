@@ -10,13 +10,14 @@ import androidx.core.view.WindowInsetsCompat
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.ActivityHomeBinding
 import com.kraaft.video.manager.databinding.ActivityMainBinding
+import com.kraaft.video.manager.ui.base.BaseActivity
 import com.kraaft.video.manager.utils.beVisible
 import com.kraaft.video.manager.utils.gotoActivity
 import com.kraaft.video.manager.utils.gotoIntent
 import com.kraaft.video.manager.utils.onSingleClick
 import kotlin.jvm.java
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
     private var binding: ActivityHomeBinding? = null
 
     override fun onDestroy() {

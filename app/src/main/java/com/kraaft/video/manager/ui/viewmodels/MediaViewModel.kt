@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kraaft.video.manager.data.repo.MediaRepo
+import com.kraaft.video.manager.model.PlayList
 import com.kraaft.video.manager.model.SoundFile
 import com.kraaft.video.manager.model.SoundModel
 import com.kraaft.video.manager.model.UiState
@@ -30,11 +31,28 @@ class MediaViewModel @Inject constructor(private val mediaRepo: MediaRepo) : Vie
     val videoData: StateFlow<UiState<List<VideoFile>>?>
         get() = mediaRepo.videoData
 
-    fun fetchSound()= viewModelScope.launch(Dispatchers.IO) {
+    val playData: StateFlow<UiState<List<PlayList>>?>
+        get() = mediaRepo.playData
+
+    fun fetchPlayList(playName: String) = viewModelScope.launch(Dispatchers.IO) {
+        mediaRepo.fetchPlayList(playName)
+    }
+
+    fun addToPlaylist(soundFile: SoundFile, playName: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            mediaRepo.addToPlayList(soundFile, playName)
+        }
+
+    fun removeFromPlaylist(playFile: PlayList) =
+        viewModelScope.launch(Dispatchers.IO) {
+            mediaRepo.removeFromPlaylist(playFile)
+        }
+
+    fun fetchSound() = viewModelScope.launch(Dispatchers.IO) {
         mediaRepo.fetchSounds()
     }
 
-    fun fetchVideo()= viewModelScope.launch(Dispatchers.IO) {
+    fun fetchVideo() = viewModelScope.launch(Dispatchers.IO) {
         mediaRepo.fetchVideos()
     }
 }
