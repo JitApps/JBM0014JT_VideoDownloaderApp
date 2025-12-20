@@ -2,7 +2,6 @@ package com.kraaft.video.manager.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.kraaft.video.manager.R
-import com.kraaft.video.manager.databinding.FragmentFileListBinding
 import com.kraaft.video.manager.databinding.FragmentMediaFileBinding
+import com.kraaft.video.manager.model.SoundFile
 import com.kraaft.video.manager.model.UiState
 import com.kraaft.video.manager.model.VideoFile
-import com.kraaft.video.manager.model.VideoModel
-import com.kraaft.video.manager.ui.adapter.VideoFolderAdapter
+import com.kraaft.video.manager.ui.adapter.AudioListAdapter
 import com.kraaft.video.manager.ui.adapter.VideoListAdapter
 import com.kraaft.video.manager.ui.base.BaseFragment
 import com.kraaft.video.manager.ui.viewmodels.MediaViewModel
@@ -27,7 +25,6 @@ import com.kraaft.video.manager.utils.showPage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlin.getValue
 
 
 @AndroidEntryPoint
@@ -36,6 +33,7 @@ class MediaFileFragment : BaseFragment() {
     private var binding: FragmentMediaFileBinding? = null
     private var isSound = false
     private var videoAdapter: VideoListAdapter? = null
+    private var audioAdapter: AudioListAdapter? = null
 
     val viewModel: MediaViewModel by viewModels()
 
@@ -70,13 +68,14 @@ class MediaFileFragment : BaseFragment() {
     }
 
     fun Context.initMusicRv() {
-        videoAdapter = VideoListAdapter(this) { item, position ->
+        audioAdapter = AudioListAdapter(this) { item, position ->
 
         }
         binding?.rvMedia?.apply {
-            layoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
-            adapter = videoAdapter
+            layoutManager = LinearLayoutManager(this@initMusicRv)
+            adapter = audioAdapter
         }
+        observeAudioUiState()
     }
 
     fun Context.initVideoRv() {
@@ -118,6 +117,44 @@ class MediaFileFragment : BaseFragment() {
                     viewModel.fetchVideo()
                 }
             }
+        }
+    }
+
+    private fun observeAudioUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.soundData.collectLatest { uiState ->
+                uiState?.let {
+                    when (uiState) {
+
+                        is UiState.Loading -> {
+                            binding?.let {
+                                it.includedError.showLoading(it.cvMain)
+                            }
+                        }
+
+                        is UiState.Success -> {
+                            refreshAudioData(uiState.data)
+                        }
+
+                        is UiState.Error -> {
+                            showErrorOrEmpty(uiState.message)
+                        }
+
+                        is UiState.Empty -> {
+                            showErrorOrEmpty()
+                        }
+                    }
+                } ?: run {
+                    viewModel.fetchSound()
+                }
+            }
+        }
+    }
+
+    private fun refreshAudioData(newList: List<SoundFile>) {
+        audioAdapter?.refreshData(newList.toMutableList())
+        binding?.let {
+            it.includedError.showPage(it.cvMain)
         }
     }
 
