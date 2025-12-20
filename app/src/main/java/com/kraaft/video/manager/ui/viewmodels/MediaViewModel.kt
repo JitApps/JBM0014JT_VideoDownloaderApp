@@ -1,5 +1,6 @@
 package com.kraaft.video.manager.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kraaft.video.manager.data.repo.MediaRepo
@@ -29,8 +30,11 @@ class MediaViewModel @Inject constructor(private val mediaRepo: MediaRepo) : Vie
     val videoData: StateFlow<UiState<List<VideoFile>>?>
         get() = mediaRepo.videoData
 
-    fun fetchData()= viewModelScope.launch(Dispatchers.IO) {
+    fun fetchSound()= viewModelScope.launch(Dispatchers.IO) {
         mediaRepo.fetchSounds()
+    }
+
+    fun fetchVideo()= viewModelScope.launch(Dispatchers.IO) {
         mediaRepo.fetchVideos()
     }
 }

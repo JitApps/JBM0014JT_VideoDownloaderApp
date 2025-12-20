@@ -4,7 +4,6 @@
     style="@style/clickEffect"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_80sdp"
-    android:layout_marginStart="@dimen/_10sdp"
     android:layout_marginTop="@dimen/_10sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +20,7 @@
 
             <ImageView
                 android:id="@+id/ivAlbum"
+                android:src="@drawable/ic_music"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"

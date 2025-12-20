@@ -17,7 +17,8 @@ import com.kraaft.video.manager.utils.onSingleClick
 class VideoListAdapter(val context: Context, val onClickListener: (VideoFile, Int) -> Unit) :
     RecyclerView.Adapter<VideoHolder>() {
 
-    private var statusList = mutableListOf<VideoFile>()
+    private var videoList = mutableListOf<VideoFile>()
+
     val height =
         (context.resources.displayMetrics.widthPixels - context.resources.getDimension(R.dimen.item_margin).toInt()) / 2
 
@@ -32,14 +33,14 @@ class VideoListAdapter(val context: Context, val onClickListener: (VideoFile, In
     fun refreshData(newList: MutableList<VideoFile>) {
         val diffResult = DiffUtil.calculateDiff(
             DiffCallback(
-                oldList = statusList,
+                oldList = videoList,
                 newList = newList,
                 areItemsTheSame = { oldItem, newItem -> oldItem.uri == newItem.uri }
             )
         )
 
-        statusList.clear()
-        statusList.addAll(newList)
+        videoList.clear()
+        videoList.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -47,16 +48,16 @@ class VideoListAdapter(val context: Context, val onClickListener: (VideoFile, In
         return VideoHolder(ItemVideoBinding.inflate(LayoutInflater.from(context), parent, false))
     }
 
-    override fun getItemCount(): Int = statusList.size
+    override fun getItemCount(): Int = videoList.size
 
     override fun onBindViewHolder(holder: VideoHolder, position: Int) {
         holder.binding.apply {
-            Glide.with(context).load(statusList[position].uri)
+            Glide.with(context).load(videoList[position].uri)
                 .placeholder(R.drawable.image_placeholder)
                 .error(R.drawable.image_placeholder)
                 .into(ivFile)
             root.onSingleClick {
-                onClickListener.invoke(statusList[position], position)
+                onClickListener.invoke(videoList[position], position)
             }
         }
     }

@@ -6,31 +6,29 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kraaft.video.manager.databinding.ItemMediaFolderBinding
-import com.kraaft.video.manager.model.VideoModel
+import com.kraaft.video.manager.model.SoundModel
 import com.kraaft.video.manager.utils.DiffCallback
 
-class VideoFolderAdapter(val context: Context,val onClickListener: (VideoModel, Int) -> Unit) :
+class AudioFolderAdapter(val context: Context, val onClickListener: (SoundModel, Int) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var videoList = mutableListOf<VideoModel>()
+    private var soundList = mutableListOf<SoundModel>()
 
-    inner class VideoFolderHolder(val binding: ItemMediaFolderBinding) :
+    inner class AudioFolderHolder(val binding: ItemMediaFolderBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    fun refreshData(newList: List<VideoModel>) {
+    fun refreshData(newList: List<SoundModel>) {
         val diffResult = DiffUtil.calculateDiff(
             DiffCallback(
-                oldList = videoList,
+                oldList = soundList,
                 newList = newList,
                 areItemsTheSame = { oldItem, newItem -> oldItem.folderName == newItem.folderName }
             )
         )
 
-        videoList.clear()
-        videoList.addAll(newList)
+        soundList.clear()
+        soundList.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -38,7 +36,7 @@ class VideoFolderAdapter(val context: Context,val onClickListener: (VideoModel, 
         parent: ViewGroup,
         viewType: Int
     ): RecyclerView.ViewHolder {
-        return VideoFolderHolder(
+        return AudioFolderHolder(
             ItemMediaFolderBinding.inflate(
                 LayoutInflater.from(context),
                 parent,
@@ -52,14 +50,11 @@ class VideoFolderAdapter(val context: Context,val onClickListener: (VideoModel, 
         holder: RecyclerView.ViewHolder,
         position: Int
     ) {
-        val item = videoList[position]
+        val item = soundList[position]
         when (holder) {
-            is VideoFolderHolder -> {
+            is AudioFolderHolder -> {
                 holder.binding.tvName.text = item.folderName
-                holder.binding.albumSize.text = "${item.videoFiles.size} Videos"
-                Glide.with(context).load(item.videoFiles[0].uri)
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .into(holder.binding.ivAlbum)
+                holder.binding.albumSize.text = "${item.soundFiles.size} Files"
             }
 
             else -> {
@@ -69,7 +64,7 @@ class VideoFolderAdapter(val context: Context,val onClickListener: (VideoModel, 
     }
 
     override fun getItemCount(): Int {
-        return videoList.size
+        return soundList.size
     }
 
 }

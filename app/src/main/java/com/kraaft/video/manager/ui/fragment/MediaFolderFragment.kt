@@ -15,8 +15,10 @@ import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.FragmentMediaFileBinding
 import com.kraaft.video.manager.databinding.FragmentMediaFolderBinding
 import com.kraaft.video.manager.model.FileModel
+import com.kraaft.video.manager.model.SoundModel
 import com.kraaft.video.manager.model.UiState
 import com.kraaft.video.manager.model.VideoModel
+import com.kraaft.video.manager.ui.adapter.AudioFolderAdapter
 import com.kraaft.video.manager.ui.adapter.VideoFolderAdapter
 import com.kraaft.video.manager.ui.base.BaseFragment
 import com.kraaft.video.manager.ui.viewmodels.MediaViewModel
@@ -36,7 +38,8 @@ class MediaFolderFragment : BaseFragment() {
     private var binding: FragmentMediaFolderBinding? = null
     private var isSound = false
 
-    private var folderAdapter: VideoFolderAdapter? = null
+    private var videoAdapter: VideoFolderAdapter? = null
+    private var audioAdapter: AudioFolderAdapter? = null
 
     val viewModel: MediaViewModel by viewModels()
 
@@ -75,24 +78,57 @@ class MediaFolderFragment : BaseFragment() {
     }
 
     fun Context.initMusicRv() {
-        folderAdapter = VideoFolderAdapter(this) { item, position ->
+        audioAdapter = AudioFolderAdapter(this) { item, position ->
 
         }
         binding?.rvMedia?.apply {
             layoutManager = LinearLayoutManager(this@initMusicRv)
-            adapter = folderAdapter
+            adapter = audioAdapter
         }
+        observeAudioUiState()
     }
 
     fun Context.initVideoRv() {
-        folderAdapter = VideoFolderAdapter(this) { item, position ->
+        videoAdapter = VideoFolderAdapter(this) { item, position ->
 
         }
         binding?.rvMedia?.apply {
             layoutManager = LinearLayoutManager(this@initVideoRv)
-            adapter = folderAdapter
+            adapter = videoAdapter
         }
         observeVideoUiState()
+    }
+
+
+    private fun observeAudioUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.soundFolderData.collectLatest { uiState ->
+                uiState?.let {
+                    when (uiState) {
+
+                        is UiState.Loading -> {
+                            binding?.let {
+                                it.includedError.showLoading(it.cvMain)
+                            }
+                        }
+
+                        is UiState.Success -> {
+                            refreshAudioData(uiState.data)
+                        }
+
+                        is UiState.Error -> {
+                            showErrorOrEmpty(uiState.message)
+                        }
+
+                        is UiState.Empty -> {
+                            showErrorOrEmpty()
+                        }
+                    }
+                } ?: run {
+                    viewModel.fetchSound()
+                }
+            }
+        }
     }
 
     private fun observeVideoUiState() {
@@ -120,24 +156,30 @@ class MediaFolderFragment : BaseFragment() {
                         }
                     }
                 } ?: run {
-                    viewModel.fetchData()
+                    viewModel.fetchVideo()
                 }
             }
         }
     }
 
     private fun refreshVideoData(newList: List<VideoModel>) {
-        folderAdapter?.refreshData(newList.toMutableList())
+        videoAdapter?.refreshData(newList.toMutableList())
         binding?.let {
             it.includedError.showPage(it.cvMain)
         }
     }
+
+    private fun refreshAudioData(newList: List<SoundModel>) {
+        audioAdapter?.refreshData(newList.toMutableList())
+        binding?.let {
+            it.includedError.showPage(it.cvMain)
+        }
+    }
+
 
     fun showErrorOrEmpty(message: String = getString(R.string.kk_error_no_data)) {
         binding?.let {
             it.includedError.showError(message, it.cvMain)
         }
     }
-
-
 }

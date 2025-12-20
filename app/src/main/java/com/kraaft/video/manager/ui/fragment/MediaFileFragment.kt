@@ -115,7 +115,7 @@ class MediaFileFragment : BaseFragment() {
                         }
                     }
                 } ?: run {
-                    viewModel.fetchData()
+                    viewModel.fetchVideo()
                 }
             }
         }
