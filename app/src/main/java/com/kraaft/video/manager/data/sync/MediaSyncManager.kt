@@ -1,13 +1,8 @@
 package com.kraaft.video.manager.data.sync
 
-import android.content.ContentUris
 import android.content.Context
 import android.provider.MediaStore
 import com.kraaft.video.manager.model.FileEntity
-import com.kraaft.video.manager.model.SoundFile
-import com.kraaft.video.manager.model.SoundModel
-import com.kraaft.video.manager.model.VideoFile
-import com.kraaft.video.manager.model.VideoModel
 import com.kraaft.video.manager.utils.FILE_AUDIO
 import com.kraaft.video.manager.utils.FILE_VIDEO
 import com.kraaft.video.manager.utils.PERMISSION_SOUND

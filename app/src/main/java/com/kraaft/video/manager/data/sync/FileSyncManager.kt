@@ -13,6 +13,7 @@ import java.io.File
 import java.util.Arrays
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import com.kraaft.video.manager.model.FileEntity
 
 
 class FileSyncManager @Inject constructor(

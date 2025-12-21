@@ -1,6 +1,5 @@
 package com.kraaft.video.manager.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kraaft.video.manager.data.db.DbHelper
@@ -9,8 +8,6 @@ import com.kraaft.video.manager.data.repo.VideoRepo
 import com.kraaft.video.manager.model.FileEntity
 import com.kraaft.video.manager.model.FolderCount
 import com.kraaft.video.manager.model.UiState
-import com.kraaft.video.manager.model.VideoFile
-import com.kraaft.video.manager.model.VideoModel
 import com.kraaft.video.manager.utils.FILE_AUDIO
 import com.kraaft.video.manager.utils.FILE_VIDEO
 import dagger.hilt.android.lifecycle.HiltViewModel

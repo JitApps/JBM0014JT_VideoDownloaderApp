@@ -2,7 +2,6 @@ package com.kraaft.video.manager.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.FragmentMediaFileBinding
 import com.kraaft.video.manager.model.FileEntity
-import com.kraaft.video.manager.model.SoundFile
 import com.kraaft.video.manager.model.UiState
-import com.kraaft.video.manager.model.VideoFile
 import com.kraaft.video.manager.ui.adapter.AudioListAdapter
 import com.kraaft.video.manager.ui.adapter.VideoListAdapter
 import com.kraaft.video.manager.ui.base.BaseFragment
@@ -24,7 +21,6 @@ import com.kraaft.video.manager.ui.viewmodels.MediaViewModel
 import com.kraaft.video.manager.utils.showError
 import com.kraaft.video.manager.utils.showLoading
 import com.kraaft.video.manager.utils.showPage
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

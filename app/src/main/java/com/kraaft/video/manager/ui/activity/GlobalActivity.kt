@@ -71,20 +71,6 @@ class GlobalActivity : BaseActivity() {
         }
     }
 
-    private fun loadFragment() {
-        fileListFragment = FileListFragment.Companion.getInstance(
-            getDownloadsPath(),
-            false
-        )
-        fileListFragment?.let { fragment ->
-            binding?.viewPager?.apply {
-                adapter = PagerFragmentAdapter(supportFragmentManager, lifecycle).apply {
-                    addFragment(fragment, "")
-                }
-            }
-        }
-    }
-
     private fun downloadFile(url: String) {
         showLoadingDialog(getString(R.string.kk_fetching_please_wait))
         lifecycleScope.launch {
@@ -99,7 +85,7 @@ class GlobalActivity : BaseActivity() {
                         folderPath = getDownloadsPath(),
                         filePath = result
                     ) {
-                        fileListFragment?.viewModel?.fetchDownloads(getDownloadsPath())
+
                     }
                 } else {
                     showToast("Download Failed")

@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.ItemVideoBinding
 import com.kraaft.video.manager.model.FileEntity
-import com.kraaft.video.manager.model.VideoFile
 import com.kraaft.video.manager.ui.adapter.VideoListAdapter.VideoHolder
 import com.kraaft.video.manager.utils.DiffCallback
 import com.kraaft.video.manager.utils.onSingleClick
