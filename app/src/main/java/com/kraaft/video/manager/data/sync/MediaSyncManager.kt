@@ -3,10 +3,13 @@ package com.kraaft.video.manager.data.sync
 import android.content.ContentUris
 import android.content.Context
 import android.provider.MediaStore
+import com.kraaft.video.manager.model.FileEntity
 import com.kraaft.video.manager.model.SoundFile
 import com.kraaft.video.manager.model.SoundModel
 import com.kraaft.video.manager.model.VideoFile
 import com.kraaft.video.manager.model.VideoModel
+import com.kraaft.video.manager.utils.FILE_AUDIO
+import com.kraaft.video.manager.utils.FILE_VIDEO
 import com.kraaft.video.manager.utils.PERMISSION_SOUND
 import com.kraaft.video.manager.utils.PERMISSION_VIDEO
 import com.kraaft.video.manager.utils.hasPermission
@@ -19,10 +22,10 @@ class MediaSyncManager @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
 
-    fun fetchVideos(): List<VideoModel> {
+    fun fetchVideos(): List<FileEntity> {
         if (!context.hasPermission(listOf(PERMISSION_VIDEO))) return emptyList()
 
-        val folderMap = mutableMapOf<String, VideoModel>() // HashMap for fast folder lookup
+        val folderMap = mutableListOf<FileEntity>()
 
         val projection = arrayOf(
             MediaStore.Video.Media._ID,
@@ -64,35 +67,32 @@ class MediaSyncManager @Inject constructor(
 
                 val folderName = file.parentFile?.name ?: "Unknown"
 
-                val uri = ContentUris.withAppendedId(
-                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                    id
-                )
 
-                val videoFile = VideoFile(
-                    id = id,
+
+                val videoFile = FileEntity(
+                    itemId = id,
                     name = name,
-                    uri = uri,
+                    filePath = file.absolutePath,
                     duration = duration,
                     size = size,
+                    folderPath = folderName,
+                    playName = listOf(),
+                    fileType = FILE_VIDEO,
                     dateModified = dateModified
                 )
 
-                val folder = folderMap.getOrPut(folderName) {
-                    VideoModel(folderName = folderName, videoFiles = mutableListOf())
-                }
-                folder.videoFiles.add(videoFile)
+                folderMap.add(videoFile)
             }
         }
 
-        return folderMap.values.toList()
+        return folderMap
     }
 
-    fun fetchSounds(): List<SoundModel> {
+    fun fetchSounds(): List<FileEntity> {
 
         if (!context.hasPermission(listOf(PERMISSION_SOUND))) return emptyList()
 
-        val folderMap = mutableMapOf<String, SoundModel>() // HashMap for fast folder lookup
+        val folderMap = mutableListOf<FileEntity>()
 
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
@@ -134,30 +134,26 @@ class MediaSyncManager @Inject constructor(
 
                 if (!file.exists()) continue
 
-                val folderName = file.parentFile?.name ?: "Unknown"
+                val folderName = file.parentFile?.absolutePath ?: "Unknown"
 
-                val uri = ContentUris.withAppendedId(
-                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                    id
-                )
 
-                val soundFile = SoundFile(
-                    id = id,
+                val soundFile = FileEntity(
+                    itemId = id,
                     name = name,
-                    uri = uri,
+                    filePath = file.absolutePath,
                     duration = duration,
                     size = size,
+                    folderPath = folderName,
+                    playName = listOf(),
+                    fileType = FILE_AUDIO,
                     dateModified = dateModified
                 )
 
-                val folder = folderMap.getOrPut(folderName) {
-                    SoundModel(folderName = folderName, soundFiles = mutableListOf())
-                }
-                folder.soundFiles.add(soundFile)
+                folderMap.add(soundFile)
             }
         }
 
-        return folderMap.values.toList()
+        return folderMap
     }
 
 }

@@ -87,7 +87,7 @@ class GlobalActivity : BaseActivity() {
 
     private fun downloadFile(url: String) {
         showLoadingDialog(getString(R.string.kk_fetching_please_wait))
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             val myDoc = Jsoup.connect(url).get()
             val result =
                 myDoc.select("meta[property=\"og:video:secure_url\"]").last()?.attr("content") ?: ""

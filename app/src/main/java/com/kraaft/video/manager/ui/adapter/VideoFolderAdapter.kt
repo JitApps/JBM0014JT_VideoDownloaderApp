@@ -9,23 +9,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kraaft.video.manager.databinding.ItemMediaFolderBinding
+import com.kraaft.video.manager.model.FolderCount
 import com.kraaft.video.manager.model.VideoModel
 import com.kraaft.video.manager.utils.DiffCallback
+import java.io.File
 
-class VideoFolderAdapter(val context: Context,val onClickListener: (VideoModel, Int) -> Unit) :
+class VideoFolderAdapter(val context: Context,val onClickListener: (FolderCount, Int) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var videoList = mutableListOf<VideoModel>()
+    private var videoList = mutableListOf<FolderCount>()
 
     inner class VideoFolderHolder(val binding: ItemMediaFolderBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    fun refreshData(newList: List<VideoModel>) {
+    fun refreshData(newList: List<FolderCount>) {
         val diffResult = DiffUtil.calculateDiff(
             DiffCallback(
                 oldList = videoList,
                 newList = newList,
-                areItemsTheSame = { oldItem, newItem -> oldItem.folderName == newItem.folderName }
+                areItemsTheSame = { oldItem, newItem -> oldItem.folderPath == newItem.folderPath }
             )
         )
 
@@ -55,11 +57,8 @@ class VideoFolderAdapter(val context: Context,val onClickListener: (VideoModel, 
         val item = videoList[position]
         when (holder) {
             is VideoFolderHolder -> {
-                holder.binding.tvName.text = item.folderName
-                holder.binding.albumSize.text = "${item.videoFiles.size} Videos"
-                Glide.with(context).load(item.videoFiles[0].uri)
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .into(holder.binding.ivAlbum)
+                holder.binding.tvName.text = File(item.folderPath).name
+                holder.binding.albumSize.text = "${item.folderPath} Videos"
             }
 
             else -> {

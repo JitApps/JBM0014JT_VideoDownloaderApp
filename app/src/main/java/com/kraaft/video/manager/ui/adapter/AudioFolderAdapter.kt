@@ -7,23 +7,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kraaft.video.manager.databinding.ItemMediaFolderBinding
+import com.kraaft.video.manager.model.FolderCount
 import com.kraaft.video.manager.model.SoundModel
 import com.kraaft.video.manager.utils.DiffCallback
+import java.io.File
 
-class AudioFolderAdapter(val context: Context, val onClickListener: (SoundModel, Int) -> Unit) :
+class AudioFolderAdapter(val context: Context, val onClickListener: (String, Int) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var soundList = mutableListOf<SoundModel>()
+    private var soundList = mutableListOf<FolderCount>()
 
     inner class AudioFolderHolder(val binding: ItemMediaFolderBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    fun refreshData(newList: List<SoundModel>) {
+    fun refreshData(newList: List<FolderCount>) {
         val diffResult = DiffUtil.calculateDiff(
             DiffCallback(
                 oldList = soundList,
                 newList = newList,
-                areItemsTheSame = { oldItem, newItem -> oldItem.folderName == newItem.folderName }
+                areItemsTheSame = { oldItem, newItem -> oldItem.folderPath == newItem.folderPath }
             )
         )
 
@@ -53,8 +55,8 @@ class AudioFolderAdapter(val context: Context, val onClickListener: (SoundModel,
         val item = soundList[position]
         when (holder) {
             is AudioFolderHolder -> {
-                holder.binding.tvName.text = item.folderName
-                holder.binding.albumSize.text = "${item.soundFiles.size} Files"
+                holder.binding.tvName.text = File(item.folderPath).name ?: "Unknown"
+                holder.binding.albumSize.text = "${item.totalCount} Files"
             }
 
             else -> {

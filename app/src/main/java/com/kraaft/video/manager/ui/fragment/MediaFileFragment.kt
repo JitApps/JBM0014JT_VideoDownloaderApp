@@ -2,6 +2,7 @@ package com.kraaft.video.manager.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.FragmentMediaFileBinding
+import com.kraaft.video.manager.model.FileEntity
 import com.kraaft.video.manager.model.SoundFile
 import com.kraaft.video.manager.model.UiState
 import com.kraaft.video.manager.model.VideoFile
@@ -74,7 +76,7 @@ class MediaFileFragment : BaseFragment() {
             if (isAdd) {
                 viewModel.addToPlaylist(item, "sound")
             } else {
-
+                viewModel.removeFromPlaylist(item)
             }
         }, onClickListener = { item, position ->
 
@@ -113,18 +115,7 @@ class MediaFileFragment : BaseFragment() {
                         }
 
                         is UiState.Success -> {
-                            refreshAudioData(
-                                uiState.data.map {
-                                    SoundFile(
-                                        id = it.itemId,
-                                        name = it.name,
-                                        uri = it.uri,
-                                        duration = it.duration,
-                                        size = it.size,
-                                        dateModified = it.dateModified,
-                                    )
-                                }
-                            )
+                            refreshAudioData(uiState.data)
                         }
 
                         is UiState.Error -> {
@@ -144,30 +135,26 @@ class MediaFileFragment : BaseFragment() {
 
     private fun observeVideoUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.videoData.collectLatest { uiState ->
-                uiState?.let {
-                    when (uiState) {
+            viewModel.uiVideoState.collectLatest { uiState ->
+                when (uiState) {
 
-                        is UiState.Loading -> {
-                            binding?.let {
-                                it.includedError.showLoading(it.cvMain)
-                            }
-                        }
-
-                        is UiState.Success -> {
-                            refreshVideoData(uiState.data)
-                        }
-
-                        is UiState.Error -> {
-                            showErrorOrEmpty(uiState.message)
-                        }
-
-                        is UiState.Empty -> {
-                            showErrorOrEmpty()
+                    is UiState.Loading -> {
+                        binding?.let {
+                            it.includedError.showLoading(it.cvMain)
                         }
                     }
-                } ?: run {
-                    viewModel.fetchVideo()
+
+                    is UiState.Success -> {
+                        refreshVideoData(uiState.data)
+                    }
+
+                    is UiState.Error -> {
+                        showErrorOrEmpty(uiState.message)
+                    }
+
+                    is UiState.Empty -> {
+                        showErrorOrEmpty()
+                    }
                 }
             }
         }
@@ -175,47 +162,39 @@ class MediaFileFragment : BaseFragment() {
 
     private fun observeAudioUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.soundData.collectLatest { uiState ->
-                uiState?.let {
-                    when (uiState) {
+            viewModel.uiSoundState.collectLatest { uiState ->
+                 when (uiState) {
 
-                        is UiState.Loading -> {
-                            binding?.let {
-                                it.includedError.showLoading(it.cvMain)
-                            }
-                        }
-
-                        is UiState.Success -> {
-                            refreshAudioData(uiState.data)
-                        }
-
-                        is UiState.Error -> {
-                            showErrorOrEmpty(uiState.message)
-                        }
-
-                        is UiState.Empty -> {
-                            showErrorOrEmpty()
+                    is UiState.Loading -> {
+                        binding?.let {
+                            it.includedError.showLoading(it.cvMain)
                         }
                     }
-                } ?: run {
-                    if (isPlayList) {
-                        viewModel.fetchPlayList("sound")
-                    } else {
-                        viewModel.fetchSound()
+
+                    is UiState.Success -> {
+                        refreshAudioData(uiState.data)
+                    }
+
+                    is UiState.Error -> {
+                        showErrorOrEmpty(uiState.message)
+                    }
+
+                    is UiState.Empty -> {
+                        showErrorOrEmpty()
                     }
                 }
             }
         }
     }
 
-    private fun refreshAudioData(newList: List<SoundFile>) {
+    private fun refreshAudioData(newList: List<FileEntity>) {
         audioAdapter?.refreshData(newList.toMutableList())
         binding?.let {
             it.includedError.showPage(it.cvMain)
         }
     }
 
-    private fun refreshVideoData(newList: List<VideoFile>) {
+    private fun refreshVideoData(newList: List<FileEntity>) {
         videoAdapter?.refreshData(newList.toMutableList())
         binding?.let {
             it.includedError.showPage(it.cvMain)

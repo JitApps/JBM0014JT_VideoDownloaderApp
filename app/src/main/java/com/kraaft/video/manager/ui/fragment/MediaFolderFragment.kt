@@ -15,6 +15,7 @@ import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.FragmentMediaFileBinding
 import com.kraaft.video.manager.databinding.FragmentMediaFolderBinding
 import com.kraaft.video.manager.model.FileModel
+import com.kraaft.video.manager.model.FolderCount
 import com.kraaft.video.manager.model.SoundModel
 import com.kraaft.video.manager.model.UiState
 import com.kraaft.video.manager.model.VideoModel
@@ -30,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.collections.toMutableList
 import kotlin.getValue
 
 class MediaFolderFragment : BaseFragment() {
@@ -101,30 +103,26 @@ class MediaFolderFragment : BaseFragment() {
 
     private fun observeAudioUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.soundFolderData.collectLatest { uiState ->
-                uiState?.let {
-                    when (uiState) {
+            viewModel.uiSoundFolderState.collectLatest { uiState ->
+                when (uiState) {
 
-                        is UiState.Loading -> {
-                            binding?.let {
-                                it.includedError.showLoading(it.cvMain)
-                            }
-                        }
-
-                        is UiState.Success -> {
-                            refreshAudioData(uiState.data)
-                        }
-
-                        is UiState.Error -> {
-                            showErrorOrEmpty(uiState.message)
-                        }
-
-                        is UiState.Empty -> {
-                            showErrorOrEmpty()
+                    is UiState.Loading -> {
+                        binding?.let {
+                            it.includedError.showLoading(it.cvMain)
                         }
                     }
-                } ?: run {
-                    viewModel.fetchSound()
+
+                    is UiState.Success -> {
+                        refreshAudioData(uiState.data)
+                    }
+
+                    is UiState.Error -> {
+                        showErrorOrEmpty(uiState.message)
+                    }
+
+                    is UiState.Empty -> {
+                        showErrorOrEmpty()
+                    }
                 }
             }
         }
@@ -132,43 +130,39 @@ class MediaFolderFragment : BaseFragment() {
 
     private fun observeVideoUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.videoFolderData.collectLatest { uiState ->
-                uiState?.let {
-                    when (uiState) {
+            viewModel.uiVideoFolderState.collectLatest { uiState ->
+                when (uiState) {
 
-                        is UiState.Loading -> {
-                            binding?.let {
-                                it.includedError.showLoading(it.cvMain)
-                            }
-                        }
-
-                        is UiState.Success -> {
-                            refreshVideoData(uiState.data)
-                        }
-
-                        is UiState.Error -> {
-                            showErrorOrEmpty(uiState.message)
-                        }
-
-                        is UiState.Empty -> {
-                            showErrorOrEmpty()
+                    is UiState.Loading -> {
+                        binding?.let {
+                            it.includedError.showLoading(it.cvMain)
                         }
                     }
-                } ?: run {
-                    viewModel.fetchVideo()
+
+                    is UiState.Success -> {
+                        refreshVideoData(uiState.data)
+                    }
+
+                    is UiState.Error -> {
+                        showErrorOrEmpty(uiState.message)
+                    }
+
+                    is UiState.Empty -> {
+                        showErrorOrEmpty()
+                    }
                 }
             }
         }
     }
 
-    private fun refreshVideoData(newList: List<VideoModel>) {
+    private fun refreshVideoData(newList: List<FolderCount>) {
         videoAdapter?.refreshData(newList.toMutableList())
         binding?.let {
             it.includedError.showPage(it.cvMain)
         }
     }
 
-    private fun refreshAudioData(newList: List<SoundModel>) {
+    private fun refreshAudioData(newList: List<FolderCount>) {
         audioAdapter?.refreshData(newList.toMutableList())
         binding?.let {
             it.includedError.showPage(it.cvMain)

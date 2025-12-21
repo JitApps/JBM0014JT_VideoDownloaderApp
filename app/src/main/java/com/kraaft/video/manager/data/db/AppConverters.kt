@@ -1,17 +1,16 @@
 package com.kraaft.video.manager.data.db
 
-import android.net.Uri
 import androidx.room.TypeConverter
 
 class AppConverters {
 
     @TypeConverter
-    fun fromUri(uri: Uri?): String? {
-        return uri?.toString()
-    }
+    fun fromList(list: List<String>?): String? =
+        list?.joinToString(",")
 
     @TypeConverter
-    fun toUri(uriString: String?): Uri? {
-        return uriString?.let { Uri.parse(it) }
-    }
+    fun toList(data: String?): List<String> =
+        data?.takeIf { it.isNotBlank() }
+            ?.split(",")
+            ?: emptyList()
 }

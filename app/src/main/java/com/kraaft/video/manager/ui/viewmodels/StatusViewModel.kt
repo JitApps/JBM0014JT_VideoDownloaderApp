@@ -17,11 +17,11 @@ class StatusViewModel @Inject constructor(private val statusRepo: StatusRepo) : 
     val statusData: StateFlow<UiState<List<FileModel>>?>
         get() = statusRepo.statusData
 
-    fun fetchStatus(folderPath: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun fetchStatus(folderPath: String) = viewModelScope.launch {
         statusRepo.fetchStatus(folderPath)
     }
 
-    fun fetchDownloads(folderPath: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun fetchDownloads(folderPath: String) = viewModelScope.launch {
         statusRepo.fetchDownloads(folderPath)
     }
 
