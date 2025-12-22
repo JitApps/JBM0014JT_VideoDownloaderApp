@@ -81,11 +81,13 @@ class DownloadAdapter(val context: Context, val viewModel: DownloadViewModel) :
                     DOWNLOAD_COMPLETE -> {
                         holder.binding.progressBar.visibility = View.GONE
                         holder.binding.tvDuration.text = "Download Complete"
+                        holder.binding.tvPercent.text = ""
                     }
 
                     DOWNLOAD_FAILED -> {
                         holder.binding.progressBar.visibility = View.GONE
                         holder.binding.tvDuration.text = "Download Failed"
+                        holder.binding.tvPercent.text = ""
                     }
 
                     DOWNLOAD_RUNNING -> {
@@ -104,6 +106,7 @@ class DownloadAdapter(val context: Context, val viewModel: DownloadViewModel) :
                     else -> {
                         holder.binding.progressBar.visibility = View.VISIBLE
                         holder.binding.tvDuration.text = "Download Started"
+                        holder.binding.tvPercent.text = ""
                     }
                 }
             }

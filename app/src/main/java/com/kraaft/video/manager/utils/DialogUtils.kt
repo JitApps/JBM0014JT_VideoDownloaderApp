@@ -214,7 +214,6 @@ fun Context.downloadFile(
             progressCallBack.invoke(progress.currentBytes, progress.totalBytes)
         }.start(object : OnDownloadListener {
             override fun onDownloadComplete() {
-                showToast("Download Completed")
                 callback.invoke(true, "")
             }
 

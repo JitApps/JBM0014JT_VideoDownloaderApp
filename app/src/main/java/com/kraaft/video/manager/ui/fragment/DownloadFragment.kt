@@ -47,6 +47,13 @@ class DownloadFragment : BaseFragment() {
         }
     }
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        fileType = arguments?.getInt("fileType", FILE_OTHER_DOWNLOAD) ?: FILE_OTHER_DOWNLOAD
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
