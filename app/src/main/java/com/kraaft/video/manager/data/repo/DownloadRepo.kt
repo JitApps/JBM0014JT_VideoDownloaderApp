@@ -49,11 +49,11 @@ class DownloadRepo @Inject constructor(
 
     fun updateFile(fileName: String, filePath: String, downloadProgress: DownloadProgress) {
 
-        _downloadListData.value = _downloadListData.value.map { item ->
+      /*  _downloadListData.value = _downloadListData.value.map { item ->
             if (item.fileName == fileName) item.copy(progress = downloadProgress) else item
-        }
+        }*/
 
-     //   _downloadProgressMap.value = Pair(fileName,downloadProgress)
+        _downloadProgressMap.value = Pair(fileName,downloadProgress)
         if (downloadProgress.status == DOWNLOAD_COMPLETE) {
             downloadComplete(FILE_OTHER_DOWNLOAD, filePath)
         }
