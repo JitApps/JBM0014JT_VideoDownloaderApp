@@ -1,5 +1,6 @@
 package com.kraaft.video.manager.ui.activity
 
+import android.R.attr.data
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -92,7 +93,7 @@ class GlobalActivity : BaseActivity() {
 
 
     fun Context.initDownloadRv() {
-        downloadAdapter = DownloadAdapter(this,viewModel)
+        downloadAdapter = DownloadAdapter(this, viewModel)
         binding?.rvMedia?.apply {
             layoutManager = LinearLayoutManager(this@initDownloadRv)
             itemAnimator?.apply {
@@ -117,6 +118,10 @@ class GlobalActivity : BaseActivity() {
                         hideLoadingDialog()
                         binding?.etUrl?.text?.clear()
                         showToast("Download Started")
+                        (binding?.rvMedia?.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(
+                            0,
+                            0
+                        )
                     }
 
                     is NetworkResult.Error -> {
@@ -154,6 +159,19 @@ class GlobalActivity : BaseActivity() {
 
                     is UiState.Empty -> {
                         showErrorOrEmpty()
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.progressData.collectLatest { progressData ->
+                progressData?.let { data ->
+                    downloadAdapter?.videoList?.indexOfFirst { it.fileName == data.first }?.let {
+                        downloadAdapter?.videoList[it]?.apply {
+                            progress = data.second
+                        }
+                        downloadAdapter?.notifyItemChanged(it)
                     }
                 }
             }

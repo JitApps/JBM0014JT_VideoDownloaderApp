@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import java.io.File
@@ -37,15 +38,22 @@ class DownloadRepo @Inject constructor(
 
     private val repoScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
+    private val _downloadProgressMap = MutableStateFlow<Pair<String, DownloadProgress>?>(null)
+    val downloadProgressMap: StateFlow<Pair<String, DownloadProgress>?> = _downloadProgressMap
+
+
     private val _downloadListData = MutableStateFlow<List<MediaUrl>>(emptyList())
     val downloadListData: StateFlow<List<MediaUrl>>
         get() = _downloadListData
 
 
     fun updateFile(fileName: String, filePath: String, downloadProgress: DownloadProgress) {
+
         _downloadListData.value = _downloadListData.value.map { item ->
             if (item.fileName == fileName) item.copy(progress = downloadProgress) else item
         }
+
+     //   _downloadProgressMap.value = Pair(fileName,downloadProgress)
         if (downloadProgress.status == DOWNLOAD_COMPLETE) {
             downloadComplete(FILE_OTHER_DOWNLOAD, filePath)
         }
@@ -73,7 +81,7 @@ class DownloadRepo @Inject constructor(
 
     fun addMediaFiles(mediaList: List<MediaUrl>) {
         val oldList = _downloadListData.value
-        _downloadListData.value = oldList + mediaList
+        _downloadListData.value =  mediaList + oldList
 
         mediaList.forEach {
             startDownload(it)

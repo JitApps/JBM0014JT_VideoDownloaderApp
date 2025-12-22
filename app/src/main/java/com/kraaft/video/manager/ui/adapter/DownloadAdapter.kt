@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.downloader.utils.Utils
 import com.kraaft.video.manager.databinding.ItemDownloadBinding
 import com.kraaft.video.manager.databinding.ItemMediaFolderBinding
+import com.kraaft.video.manager.model.DownloadProgress
 import com.kraaft.video.manager.model.FileEntity
 import com.kraaft.video.manager.model.FolderCount
 import com.kraaft.video.manager.model.MediaUrl
@@ -32,26 +33,24 @@ import kotlin.math.roundToInt
 
 class DownloadAdapter(val context: Context, val viewModel: DownloadViewModel) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    init { setHasStableIds(true) }
-
-    private var videoList = mutableListOf<MediaUrl>()
+        var videoList = mutableListOf<MediaUrl>()
 
     inner class DownloadHolder(val binding: ItemDownloadBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     fun refreshData(newList: List<MediaUrl>) {
-        val diffResult = DiffUtil.calculateDiff(
+      /*  val diffResult = DiffUtil.calculateDiff(
             DiffCallback(
                 oldList = videoList,
                 newList = newList,
                 areItemsTheSame = { oldItem, newItem -> oldItem.fileName == newItem.fileName }
             )
-        )
+        )*/
 
         videoList.clear()
         videoList.addAll(newList)
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
+      //  diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(
@@ -65,6 +64,18 @@ class DownloadAdapter(val context: Context, val viewModel: DownloadViewModel) :
                 false
             )
         )
+    }
+
+    fun updateProgress(progressMap: Map<String, DownloadProgress>) {
+        progressMap.forEach { (fileName, progress) ->
+            val index = videoList.indexOfFirst { it.fileName == fileName }
+            if (index != -1) {
+                videoList[index] = videoList[index].copy(
+                    progress = progress
+                )
+                notifyItemChanged(index)
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -82,12 +93,14 @@ class DownloadAdapter(val context: Context, val viewModel: DownloadViewModel) :
                         holder.binding.progressBar.visibility = View.GONE
                         holder.binding.tvDuration.text = "Download Complete"
                         holder.binding.tvPercent.text = ""
+                        holder.binding.progressBar.progress = 100
                     }
 
                     DOWNLOAD_FAILED -> {
                         holder.binding.progressBar.visibility = View.GONE
                         holder.binding.tvDuration.text = "Download Failed"
                         holder.binding.tvPercent.text = ""
+                        holder.binding.progressBar.progress = 0
                     }
 
                     DOWNLOAD_RUNNING -> {
@@ -107,6 +120,7 @@ class DownloadAdapter(val context: Context, val viewModel: DownloadViewModel) :
                         holder.binding.progressBar.visibility = View.VISIBLE
                         holder.binding.tvDuration.text = "Download Started"
                         holder.binding.tvPercent.text = ""
+                        holder.binding.progressBar.progress = 0
                     }
                 }
             }
@@ -115,10 +129,6 @@ class DownloadAdapter(val context: Context, val viewModel: DownloadViewModel) :
 
             }
         }
-    }
-
-    override fun getItemId(position: Int): Long {
-        return videoList[position].fileName.hashCode().toLong()
     }
 
     override fun getItemCount(): Int {

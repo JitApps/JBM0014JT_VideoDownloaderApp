@@ -39,7 +39,6 @@ fun getDownloadsPath(fileType: Int): String {
         val folderPath =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath +File.separator + "AllVideoDownloader" + File.separator + "Other"
 
-        Log.e("TAGRR",folderPath.toString())
         if (!File(folderPath).exists()) {
             File(folderPath).mkdirs()
         }

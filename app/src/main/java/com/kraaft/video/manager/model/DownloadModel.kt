@@ -10,7 +10,7 @@ data class DownloadModel(
 
 data class MediaUrl(
     val fileName: String,
-    val progress: DownloadProgress = DownloadProgress(),
+    var progress: DownloadProgress = DownloadProgress(),
     val type: String,
     val url: String
 )

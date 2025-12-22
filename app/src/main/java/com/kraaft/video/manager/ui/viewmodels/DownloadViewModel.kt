@@ -57,6 +57,8 @@ class DownloadViewModel @Inject constructor(
     val downloadData: StateFlow<NetworkResult<ResponseBody>?>
         get() = _downloadData
 
+    val progressData: StateFlow<Pair<String, DownloadProgress>?>
+        get() = downloadRepo.downloadProgressMap
 
     private val _dataBuffer = MutableStateFlow<List<FileEntity>>(listOf())
     private val _isDataSyncing = MutableStateFlow<Boolean?>(null)
