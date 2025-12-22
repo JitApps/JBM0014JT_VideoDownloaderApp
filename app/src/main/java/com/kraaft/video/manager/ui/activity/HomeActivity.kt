@@ -15,8 +15,10 @@ import com.kraaft.video.manager.utils.beVisible
 import com.kraaft.video.manager.utils.gotoActivity
 import com.kraaft.video.manager.utils.gotoIntent
 import com.kraaft.video.manager.utils.onSingleClick
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.jvm.java
 
+@AndroidEntryPoint
 class HomeActivity : BaseActivity() {
     private var binding: ActivityHomeBinding? = null
 

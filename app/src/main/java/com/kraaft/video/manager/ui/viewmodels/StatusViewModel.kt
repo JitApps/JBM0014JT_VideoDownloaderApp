@@ -39,21 +39,4 @@ class StatusViewModel @Inject constructor(
             _statusData.emit(UiState.Error(e.message ?: "Something went wrong"))
         }
     }
-
-    fun fetchDownloads(folderPath: String) = viewModelScope.launch {
-        _statusData.emit(UiState.Loading)
-
-        try {
-            val data = syncManager.fetchDownloads(folderPath)
-
-            _statusData.emit(if (data.isEmpty()) {
-                UiState.Empty
-            } else {
-                UiState.Success(data)
-            })
-
-        } catch (e: Exception) {
-            _statusData.emit(UiState.Error(e.message ?: "Something went wrong"))
-        }
-    }
 }

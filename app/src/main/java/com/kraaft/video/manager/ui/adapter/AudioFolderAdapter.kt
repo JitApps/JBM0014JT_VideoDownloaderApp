@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kraaft.video.manager.databinding.ItemMediaFolderBinding
 import com.kraaft.video.manager.model.FolderCount
-import com.kraaft.video.manager.model.SoundModel
 import com.kraaft.video.manager.utils.DiffCallback
 import java.io.File
 

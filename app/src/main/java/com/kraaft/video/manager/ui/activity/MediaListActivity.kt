@@ -1,31 +1,22 @@
 package com.kraaft.video.manager.ui.activity
 
-import android.R.attr.onClick
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
-import com.kraaft.video.manager.R
-import com.kraaft.video.manager.databinding.ActivityHomeBinding
 import com.kraaft.video.manager.databinding.ActivityMediaListBinding
 import com.kraaft.video.manager.ui.adapter.PagerFragmentAdapter
 import com.kraaft.video.manager.ui.base.BaseActivity
-import com.kraaft.video.manager.ui.fragment.FileListFragment
 import com.kraaft.video.manager.ui.fragment.MediaFileFragment
 import com.kraaft.video.manager.ui.fragment.MediaFolderFragment
 import com.kraaft.video.manager.ui.viewmodels.MediaViewModel
 import com.kraaft.video.manager.utils.beVisible
-import com.kraaft.video.manager.utils.getBusinessFolder
-import com.kraaft.video.manager.utils.getStatusFolder
 import com.kraaft.video.manager.utils.onSingleClick
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
+@AndroidEntryPoint
 class MediaListActivity : BaseActivity() {
 
     private var binding: ActivityMediaListBinding? = null

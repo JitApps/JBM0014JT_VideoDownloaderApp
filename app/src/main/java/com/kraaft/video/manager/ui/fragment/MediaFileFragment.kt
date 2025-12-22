@@ -21,10 +21,12 @@ import com.kraaft.video.manager.ui.viewmodels.MediaViewModel
 import com.kraaft.video.manager.utils.showError
 import com.kraaft.video.manager.utils.showLoading
 import com.kraaft.video.manager.utils.showPage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class MediaFileFragment : BaseFragment() {
 
     private var binding: FragmentMediaFileBinding? = null
@@ -95,7 +97,10 @@ class MediaFileFragment : BaseFragment() {
             layoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
             adapter = videoAdapter
         }
-        observeVideoUiState()
+        if (isPlayList) {
+            observePlayUiState()
+        } else
+            observeVideoUiState()
     }
 
     private fun observePlayUiState() {
@@ -159,7 +164,7 @@ class MediaFileFragment : BaseFragment() {
     private fun observeAudioUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiSoundState.collectLatest { uiState ->
-                 when (uiState) {
+                when (uiState) {
 
                     is UiState.Loading -> {
                         binding?.let {

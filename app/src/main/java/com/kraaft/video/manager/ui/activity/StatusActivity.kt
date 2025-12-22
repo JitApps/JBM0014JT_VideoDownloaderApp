@@ -7,12 +7,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.kraaft.video.manager.ui.adapter.PagerFragmentAdapter
 import com.kraaft.video.manager.databinding.ActivityStatusBinding
 import com.kraaft.video.manager.ui.base.BaseActivity
-import com.kraaft.video.manager.ui.fragment.FileListFragment
+import com.kraaft.video.manager.ui.fragment.StatusListFragment
 import com.kraaft.video.manager.utils.beVisible
 import com.kraaft.video.manager.utils.getBusinessFolder
 import com.kraaft.video.manager.utils.getStatusFolder
 import com.kraaft.video.manager.utils.onSingleClick
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StatusActivity : BaseActivity() {
 
     private var binding: ActivityStatusBinding? = null
@@ -63,8 +65,8 @@ class StatusActivity : BaseActivity() {
 
     private fun loadFragments(): List<Fragment> {
         return listOf<Fragment>(
-            FileListFragment.getInstance(getStatusFolder(), true),
-            FileListFragment.getInstance(getBusinessFolder(), true)
+            StatusListFragment.getInstance(getStatusFolder(), true),
+            StatusListFragment.getInstance(getBusinessFolder(), true)
         )
     }
 

@@ -20,7 +20,7 @@ import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.FragmentFileListBinding
 import com.kraaft.video.manager.model.FileModel
 import com.kraaft.video.manager.model.UiState
-import com.kraaft.video.manager.ui.adapter.FileListAdapter
+import com.kraaft.video.manager.ui.adapter.StatusListAdapter
 import com.kraaft.video.manager.ui.base.BaseFragment
 import com.kraaft.video.manager.ui.viewmodels.StatusViewModel
 import com.kraaft.video.manager.utils.PreferenceClass
@@ -34,7 +34,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 
-class FileListFragment : BaseFragment() {
+@AndroidEntryPoint
+class StatusListFragment : BaseFragment() {
 
     @Inject
     lateinit var preferenceClass: PreferenceClass
@@ -43,13 +44,12 @@ class FileListFragment : BaseFragment() {
 
     private var binding: FragmentFileListBinding? = null
     private var folderPath = ""
-    private var isStatus = false
 
-    private var fileListAdapter: FileListAdapter? = null
+    private var statusListAdapter: StatusListAdapter? = null
 
     companion object {
-        fun getInstance(folderPath: String, isStatus: Boolean): FileListFragment {
-            return FileListFragment().apply {
+        fun getInstance(folderPath: String, isStatus: Boolean): StatusListFragment {
+            return StatusListFragment().apply {
                 arguments = Bundle().apply {
                     putString("folderPath", folderPath)
                     putBoolean("pageStatus", isStatus)
@@ -61,7 +61,6 @@ class FileListFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         folderPath = arguments?.getString("folderPath", "") ?: ""
-        isStatus = arguments?.getBoolean("pageStatus", false) ?: false
     }
 
     override fun onCreateView(
@@ -116,49 +115,45 @@ class FileListFragment : BaseFragment() {
 
     private fun setAdapter() {
         context?.let {
-            fileListAdapter = FileListAdapter(it) { item, pos ->
+            statusListAdapter = StatusListAdapter(it) { item, pos ->
 
             }
             binding?.apply {
                 rvFiles.layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
-                rvFiles.adapter = fileListAdapter
+                rvFiles.adapter = statusListAdapter
             }
         }
     }
 
     private fun checkForPermissions() {
-        if (isStatus) {
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-                if (folderPath.endsWith(getStatusFolder()) && (preferenceClass.getString("w_path")
-                        .endsWith(getStatusFolder()) || context?.isPackageInstalled("com.whatsapp") == false)
-                ) {
-                    if (context?.isPackageInstalled("com.whatsapp") == false)
-                        showErrorOrEmpty()
-                    else
-                        startFetchingData()
-                } else if (folderPath.endsWith(getBusinessFolder()) && (preferenceClass.getString(
-                        "wb_path"
-                    )
-                        .endsWith(getBusinessFolder()) || context?.isPackageInstalled("com.whatsapp.w4b") == false)
-                ) {
-                    if (context?.isPackageInstalled("com.whatsapp.w4b") == false)
-                        showErrorOrEmpty()
-                    else
-                        startFetchingData()
-                } else {
-                    binding?.apply {
-                        includedError.showError(
-                            "Please give permission to access media folder",
-                            cvMain,
-                            "Allow"
-                        ) {
-                            includedError.showLoading(cvMain)
-                            getFolderPermission()
-                        }
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+            if (folderPath.endsWith(getStatusFolder()) && (preferenceClass.getString("w_path")
+                    .endsWith(getStatusFolder()) || context?.isPackageInstalled("com.whatsapp") == false)
+            ) {
+                if (context?.isPackageInstalled("com.whatsapp") == false)
+                    showErrorOrEmpty()
+                else
+                    startFetchingData()
+            } else if (folderPath.endsWith(getBusinessFolder()) && (preferenceClass.getString(
+                    "wb_path"
+                )
+                    .endsWith(getBusinessFolder()) || context?.isPackageInstalled("com.whatsapp.w4b") == false)
+            ) {
+                if (context?.isPackageInstalled("com.whatsapp.w4b") == false)
+                    showErrorOrEmpty()
+                else
+                    startFetchingData()
+            } else {
+                binding?.apply {
+                    includedError.showError(
+                        "Please give permission to access media folder",
+                        cvMain,
+                        "Allow"
+                    ) {
+                        includedError.showLoading(cvMain)
+                        getFolderPermission()
                     }
                 }
-            } else {
-                startFetchingData()
             }
         } else {
             startFetchingData()
@@ -166,17 +161,13 @@ class FileListFragment : BaseFragment() {
     }
 
     private fun startFetchingData() {
-        if (isStatus) {
-            viewModel.fetchStatus(
-                if (folderPath.endsWith(getStatusFolder())) preferenceClass.getString(
-                    "w_path", getStatusFolder()
-                ) else preferenceClass.getString(
-                    "wb_path", getBusinessFolder()
-                )
+        viewModel.fetchStatus(
+            if (folderPath.endsWith(getStatusFolder())) preferenceClass.getString(
+                "w_path", getStatusFolder()
+            ) else preferenceClass.getString(
+                "wb_path", getBusinessFolder()
             )
-        } else {
-            viewModel.fetchDownloads(folderPath)
-        }
+        )
     }
 
     fun showErrorOrEmpty(message: String = getString(R.string.kk_error_no_data)) {
@@ -186,7 +177,7 @@ class FileListFragment : BaseFragment() {
     }
 
     private fun refreshData(newList: List<FileModel>) {
-        fileListAdapter?.refreshData(newList.toMutableList())
+        statusListAdapter?.refreshData(newList.toMutableList())
         binding?.let {
             it.includedError.showPage(it.cvMain)
         }

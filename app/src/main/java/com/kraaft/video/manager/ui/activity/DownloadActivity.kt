@@ -2,18 +2,19 @@ package com.kraaft.video.manager.ui.activity
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kraaft.video.manager.databinding.ActivityDownloadBinding
 import com.kraaft.video.manager.ui.adapter.PagerFragmentAdapter
 import com.kraaft.video.manager.ui.base.BaseActivity
-import com.kraaft.video.manager.ui.fragment.FileListFragment
+import com.kraaft.video.manager.ui.fragment.DownloadFragment
+import com.kraaft.video.manager.utils.FILE_OTHER_DOWNLOAD
+import com.kraaft.video.manager.utils.FILE_WP_DOWNLOAD
 import com.kraaft.video.manager.utils.beVisible
-import com.kraaft.video.manager.utils.getDownloadsPath
-import com.kraaft.video.manager.utils.getWhatsPath
 import com.kraaft.video.manager.utils.onSingleClick
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DownloadActivity : BaseActivity() {
 
     private var binding: ActivityDownloadBinding? = null
@@ -65,8 +66,8 @@ class DownloadActivity : BaseActivity() {
 
     private fun loadFragments(): List<Fragment> {
         return listOf<Fragment>(
-            FileListFragment.Companion.getInstance(getWhatsPath(), false),
-            FileListFragment.Companion.getInstance(getDownloadsPath(), false)
+            DownloadFragment.Companion.getInstance(FILE_WP_DOWNLOAD),
+            DownloadFragment.Companion.getInstance(FILE_OTHER_DOWNLOAD)
         )
     }
 }

@@ -2,17 +2,13 @@ package com.kraaft.video.manager.ui.activity
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.ActivityGlobalBinding
-import com.kraaft.video.manager.ui.adapter.PagerFragmentAdapter
 import com.kraaft.video.manager.ui.base.BaseActivity
-import com.kraaft.video.manager.ui.fragment.FileListFragment
-import com.kraaft.video.manager.ui.viewmodels.StatusViewModel
+import com.kraaft.video.manager.utils.FILE_OTHER_DOWNLOAD
 import com.kraaft.video.manager.utils.beVisible
 import com.kraaft.video.manager.utils.getDownloadsPath
-import com.kraaft.video.manager.utils.gotoActivity
 import com.kraaft.video.manager.utils.isNotEmpty
 import com.kraaft.video.manager.utils.onSingleClick
 import com.kraaft.video.manager.utils.showDownloadDialog
@@ -25,9 +21,6 @@ import org.jsoup.Jsoup
 class GlobalActivity : BaseActivity() {
 
     private var binding: ActivityGlobalBinding? = null
-    private var fileListFragment: FileListFragment? = null
-
-    private val viewModel: StatusViewModel by viewModels()
     private var downloadType = ""
 
     override fun onDestroy() {
@@ -82,7 +75,7 @@ class GlobalActivity : BaseActivity() {
                 hideLoadingDialog()
                 if (result.isNotEmpty()) {
                     this@GlobalActivity.showDownloadDialog(
-                        folderPath = getDownloadsPath(),
+                        folderPath = getDownloadsPath(FILE_OTHER_DOWNLOAD),
                         filePath = result
                     ) {
 

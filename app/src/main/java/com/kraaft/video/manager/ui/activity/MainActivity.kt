@@ -10,8 +10,10 @@ import com.kraaft.video.manager.utils.askPermissions
 import com.kraaft.video.manager.utils.gotoActivity
 import com.kraaft.video.manager.utils.gotoIntent
 import com.kraaft.video.manager.utils.onSingleClick
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.jvm.java
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     private var binding: ActivityMainBinding? = null

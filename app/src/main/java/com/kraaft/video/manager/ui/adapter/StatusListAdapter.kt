@@ -13,8 +13,8 @@ import com.kraaft.video.manager.model.FileModel
 import com.kraaft.video.manager.utils.DiffCallback
 import com.kraaft.video.manager.utils.onSingleClick
 
-class FileListAdapter(val context: Context, val onClickListener: (FileModel, Int) -> Unit) :
-    RecyclerView.Adapter<FileListAdapter.FileHolder>() {
+class StatusListAdapter(val context: Context, val onClickListener: (FileModel, Int) -> Unit) :
+    RecyclerView.Adapter<StatusListAdapter.FileHolder>() {
 
     private var statusList = mutableListOf<FileModel>()
     val height =

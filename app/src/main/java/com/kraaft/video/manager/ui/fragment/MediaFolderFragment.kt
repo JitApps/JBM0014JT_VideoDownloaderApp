@@ -1,10 +1,7 @@
 package com.kraaft.video.manager.ui.fragment
 
 import android.content.Context
-import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,28 +9,21 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kraaft.video.manager.R
-import com.kraaft.video.manager.databinding.FragmentMediaFileBinding
 import com.kraaft.video.manager.databinding.FragmentMediaFolderBinding
-import com.kraaft.video.manager.model.FileModel
 import com.kraaft.video.manager.model.FolderCount
-import com.kraaft.video.manager.model.SoundModel
 import com.kraaft.video.manager.model.UiState
-import com.kraaft.video.manager.model.VideoModel
 import com.kraaft.video.manager.ui.adapter.AudioFolderAdapter
 import com.kraaft.video.manager.ui.adapter.VideoFolderAdapter
 import com.kraaft.video.manager.ui.base.BaseFragment
 import com.kraaft.video.manager.ui.viewmodels.MediaViewModel
-import com.kraaft.video.manager.ui.viewmodels.StatusViewModel
 import com.kraaft.video.manager.utils.showError
 import com.kraaft.video.manager.utils.showLoading
 import com.kraaft.video.manager.utils.showPage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import kotlin.collections.toMutableList
-import kotlin.getValue
 
+@AndroidEntryPoint
 class MediaFolderFragment : BaseFragment() {
 
     private var binding: FragmentMediaFolderBinding? = null

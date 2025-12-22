@@ -27,23 +27,22 @@ import retrofit2.Response
 import java.io.File
 
 
-fun getWhatsPath(): String {
-    val folderPath =
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Whatsapp"
-    if (!File(folderPath).exists()) {
-        File(folderPath).mkdirs()
+fun getDownloadsPath(fileType: Int): String {
+    if (fileType == FILE_WP_DOWNLOAD) {
+        val folderPath =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Whatsapp"
+        if (!File(folderPath).exists()) {
+            File(folderPath).mkdirs()
+        }
+        return folderPath
+    } else {
+        val folderPath =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Other"
+        if (!File(folderPath).exists()) {
+            File(folderPath).mkdirs()
+        }
+        return folderPath
     }
-    return folderPath
-}
-
-
-fun getDownloadsPath(): String {
-    val folderPath =
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Other"
-    if (!File(folderPath).exists()) {
-        File(folderPath).mkdirs()
-    }
-    return folderPath
 }
 
 fun getStatusFolder(): String {
@@ -67,10 +66,10 @@ fun Activity.gotoActivity(activityClass: Class<*>, isFinish: Boolean) {
 }
 
 fun Activity.gotoIntent(intent: Intent, isFinish: Boolean) {
-    sendIntent( intent, isFinish)
+    sendIntent(intent, isFinish)
 }
 
-private fun Activity.sendIntent( intent: Intent, isFinish: Boolean) {
+private fun Activity.sendIntent(intent: Intent, isFinish: Boolean) {
     startActivity(intent)
     if (isFinish) finish()
 }

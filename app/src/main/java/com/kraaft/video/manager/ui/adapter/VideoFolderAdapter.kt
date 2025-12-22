@@ -6,11 +6,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kraaft.video.manager.databinding.ItemMediaFolderBinding
 import com.kraaft.video.manager.model.FolderCount
-import com.kraaft.video.manager.model.VideoModel
 import com.kraaft.video.manager.utils.DiffCallback
 import java.io.File
 
