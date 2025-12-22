@@ -14,10 +14,3 @@ sealed class UiState<out T> {
 
     data object Empty : UiState<Nothing>()
 }
-
-sealed class EventUiState {
-    object Loading : EventUiState()
-    object Empty : EventUiState()
-    data class Success(val events: List<FileEntity>) : EventUiState()
-    data class Error(val message: String) : EventUiState()
-}

@@ -9,7 +9,7 @@ import retrofit2.http.POST
 interface RetroAPI {
 
     @FormUrlEncoded
-    @POST("download.php")
+    @POST("jkapps/downloader/download.php")
     suspend fun downloadFile(@Field("data") requestBody: String): Response<ResponseBody>
 
 }

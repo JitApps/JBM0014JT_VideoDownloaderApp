@@ -116,7 +116,6 @@
         <com.kraaft.video.manager.views.RoundedLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
             android:layout_marginTop="@dimen/_40sdp"
             android:background="@color/colorWhite"
             app:cornerLeftTop="@dimen/corner_size"
@@ -124,10 +123,25 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llButtons">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPager"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cvMain"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMedia"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/includedError"
+                layout="@layout/layout_error" />
+
         </com.kraaft.video.manager.views.RoundedLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

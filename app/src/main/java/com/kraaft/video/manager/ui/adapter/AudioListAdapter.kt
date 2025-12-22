@@ -52,8 +52,7 @@ class AudioListAdapter(
             ivMenu.onSingleClick { view ->
                 val selPosition = holder.adapterPosition
                 val isNotAdded = soundList[selPosition].playName.isEmpty()
-                Log.e("TAGRR",isNotAdded.toString()+" "+soundList[selPosition].playName.toString())
-                PopupMenuHelper.show(
+                 PopupMenuHelper.show(
                     anchor = view,
                     options = listOf(
                         PopupMenuHelper.Option(

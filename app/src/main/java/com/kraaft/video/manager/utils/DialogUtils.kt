@@ -5,17 +5,21 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.kraaft.video.manager.R
-import com.kraaft.video.manager.databinding.DialogCommonBinding
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.toColorInt
+import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
+import com.downloader.utils.Utils
 import com.google.android.material.button.MaterialButton
+import com.google.gson.Gson
+import com.kraaft.video.manager.R
+import com.kraaft.video.manager.databinding.DialogCommonBinding
 
 fun Context.showCommonDialog(
     message: String = resources.getString(R.string.kk_error_unknown),
@@ -193,6 +197,29 @@ fun Context.downloadFile(
                 tvMessage.text = "Download Failed"
                 showToast("Download Failed")
                 btnRetry.visibility = View.VISIBLE
+            }
+        })
+}
+
+fun Context.downloadFile(
+    fileUrl: String,
+    folderPath: String,
+    fileName: String,
+    progressCallBack: (Long, Long) -> Unit,
+    callback: (Boolean, String) -> Unit
+) {
+    PRDownloader.download(fileUrl, folderPath, fileName)
+        .build()
+        .setOnProgressListener { progress ->
+            progressCallBack.invoke(progress.currentBytes, progress.totalBytes)
+        }.start(object : OnDownloadListener {
+            override fun onDownloadComplete() {
+                showToast("Download Completed")
+                callback.invoke(true, "")
+            }
+
+            override fun onError(error: com.downloader.Error) {
+                callback.invoke(false, "Download Failed")
             }
         })
 }

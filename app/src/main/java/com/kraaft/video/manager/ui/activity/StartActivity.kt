@@ -29,7 +29,7 @@ class StartActivity : BaseActivity() {
         binding = ActivityStartBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        baseUrlInterceptor.updateBaseUrl("")
+        baseUrlInterceptor.updateBaseUrl("https://blogsandbeyond.com/")
 
         delayTask {
             gotoActivity(MainActivity::class.java, true)

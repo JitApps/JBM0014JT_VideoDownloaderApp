@@ -5,7 +5,7 @@
     android:visibility="gone"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorWhite">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cvLoading"
@@ -79,7 +79,7 @@
             android:paddingTop="@dimen/_15sdp"
             android:paddingBottom="@dimen/_25sdp"
             android:text="@string/kk_error_no_data"
-            android:textColor="@color/colorTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12ssp" />
 
         <com.google.android.material.button.MaterialButton

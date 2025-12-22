@@ -2,17 +2,21 @@ package com.kraaft.video.manager.ui.activity
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kraaft.video.manager.databinding.ActivityDownloadBinding
 import com.kraaft.video.manager.ui.adapter.PagerFragmentAdapter
 import com.kraaft.video.manager.ui.base.BaseActivity
 import com.kraaft.video.manager.ui.fragment.DownloadFragment
+import com.kraaft.video.manager.ui.viewmodels.DownloadViewModel
 import com.kraaft.video.manager.utils.FILE_OTHER_DOWNLOAD
 import com.kraaft.video.manager.utils.FILE_WP_DOWNLOAD
 import com.kraaft.video.manager.utils.beVisible
 import com.kraaft.video.manager.utils.onSingleClick
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.getValue
 
 @AndroidEntryPoint
 class DownloadActivity : BaseActivity() {

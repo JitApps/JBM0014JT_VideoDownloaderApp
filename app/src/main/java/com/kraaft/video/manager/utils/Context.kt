@@ -7,11 +7,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
-import android.os.SystemClock
 import android.util.Log
-import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.model.NetworkResult
@@ -20,24 +17,29 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Response
 import java.io.File
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 
 fun getDownloadsPath(fileType: Int): String {
     if (fileType == FILE_WP_DOWNLOAD) {
         val folderPath =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Whatsapp"
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "AllVideoDownloader" + File.separator + "Whatsapp"
+
         if (!File(folderPath).exists()) {
             File(folderPath).mkdirs()
         }
         return folderPath
     } else {
         val folderPath =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.pathSeparator + "Other"
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath +File.separator + "AllVideoDownloader" + File.separator + "Other"
+
+        Log.e("TAGRR",folderPath.toString())
         if (!File(folderPath).exists()) {
             File(folderPath).mkdirs()
         }
@@ -95,21 +97,21 @@ fun showLog(text: String = "log") {
 
 suspend fun Context.handleResponse(
     response: Response<ResponseBody>,
-    data: MutableStateFlow<NetworkResult<ResponseBody>>
+    data: MutableStateFlow<NetworkResult<ResponseBody>?>
 ) {
     response.body()?.let {
-        data.emit(NetworkResult.Success(it))
+        data.value = NetworkResult.Success(it)
     } ?: response.errorBody()?.let {
         val jsonObject = JSONObject(it.toString())
-        data.emit(
+        data.value =
             NetworkResult.Error(
                 jsonObject.optString("message")
                     .ifEmpty {
                         resources.getString(R.string.kk_error_unknown)
                     })
-        )
+
     } ?: run {
-        data.emit(NetworkResult.Error(resources.getString(R.string.kk_error_unknown)))
+        data.value = NetworkResult.Error(resources.getString(R.string.kk_error_unknown))
     }
 }
 
@@ -145,4 +147,29 @@ fun Long.formatDuration(): String {
     } else {
         String.format("%02d:%02d", minutes, seconds)
     }
+}
+
+@SuppressLint("DefaultLocale")
+fun formatBytes(bytes: Long): String {
+    val kb = 1024.0
+    val mb = kb * 1024
+    val gb = mb * 1024
+
+    return when {
+        bytes >= gb -> String.format("%.2f GB", bytes / gb)
+        bytes >= mb -> String.format("%.2f MB", bytes / mb)
+        bytes >= kb -> String.format("%.2f KB", bytes / kb)
+        else -> "$bytes B"
+    }
+}
+
+fun generateDownloadId(url: String, dirPath: String, fileName: String): Int {
+    val input = "$url|$dirPath|$fileName"
+    val md = MessageDigest.getInstance("MD5")
+    val hash = md.digest(input.toByteArray(StandardCharsets.UTF_8))
+
+    return ((hash[0].toInt() and 0xFF) shl 24) or
+            ((hash[1].toInt() and 0xFF) shl 16) or
+            ((hash[2].toInt() and 0xFF) shl 8) or
+            (hash[3].toInt() and 0xFF)
 }

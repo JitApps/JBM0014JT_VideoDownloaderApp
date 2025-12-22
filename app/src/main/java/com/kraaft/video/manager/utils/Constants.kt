@@ -1,11 +1,17 @@
 package com.kraaft.video.manager.utils
 
 import android.Manifest
-import android.content.Context
 import android.os.Build
+
+const val DOWNLOADED_FILES = "download_files"
 
 const val PERMISSION_VIDEO = 1
 const val PERMISSION_SOUND = 2
+
+const val DOWNLOAD_NOT_STARTED = -1
+const val DOWNLOAD_RUNNING = 3
+const val DOWNLOAD_COMPLETE = 1
+const val DOWNLOAD_FAILED = 0
 
 const val FILE_AUDIO = 1
 const val FILE_VIDEO = 2
