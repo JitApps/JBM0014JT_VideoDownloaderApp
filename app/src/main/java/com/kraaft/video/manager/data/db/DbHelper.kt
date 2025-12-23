@@ -28,6 +28,8 @@ class DbHelper @Inject constructor(
 
     fun getFilesByType(fileType: Int) = fileDao.getFilesByType(fileType)
     fun getFoldersByType(fileType: Int) = fileDao.getFoldersByType(fileType)
+    fun getFolderFilesByType(folderPath: String, fileType: Int) =
+        fileDao.getFolderFilesByType(folderPath, fileType)
 
     suspend fun removeFromPlaylist(playFile: FileEntity) {
         fileDao.updateAll(listOf(playFile))

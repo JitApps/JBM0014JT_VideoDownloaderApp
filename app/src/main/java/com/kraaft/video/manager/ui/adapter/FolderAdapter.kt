@@ -11,25 +11,25 @@ import com.kraaft.video.manager.model.FolderCount
 import com.kraaft.video.manager.utils.DiffCallback
 import java.io.File
 
-class VideoFolderAdapter(val context: Context,val onClickListener: (FolderCount, Int) -> Unit) :
+class FolderAdapter(val context: Context, val onClickListener: (String, Int) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var videoList = mutableListOf<FolderCount>()
+    private var folderList = mutableListOf<FolderCount>()
 
-    inner class VideoFolderHolder(val binding: ItemMediaFolderBinding) :
+    inner class AudioFolderHolder(val binding: ItemMediaFolderBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     fun refreshData(newList: List<FolderCount>) {
         val diffResult = DiffUtil.calculateDiff(
             DiffCallback(
-                oldList = videoList,
+                oldList = folderList,
                 newList = newList,
                 areItemsTheSame = { oldItem, newItem -> oldItem.folderPath == newItem.folderPath }
             )
         )
 
-        videoList.clear()
-        videoList.addAll(newList)
+        folderList.clear()
+        folderList.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -37,7 +37,7 @@ class VideoFolderAdapter(val context: Context,val onClickListener: (FolderCount,
         parent: ViewGroup,
         viewType: Int
     ): RecyclerView.ViewHolder {
-        return VideoFolderHolder(
+        return AudioFolderHolder(
             ItemMediaFolderBinding.inflate(
                 LayoutInflater.from(context),
                 parent,
@@ -51,11 +51,15 @@ class VideoFolderAdapter(val context: Context,val onClickListener: (FolderCount,
         holder: RecyclerView.ViewHolder,
         position: Int
     ) {
-        val item = videoList[position]
+        val item = folderList[position]
         when (holder) {
-            is VideoFolderHolder -> {
-                holder.binding.tvName.text = File(item.folderPath).name
-                holder.binding.albumSize.text = "${item.folderPath} Videos"
+            is AudioFolderHolder -> {
+                holder.binding.tvName.text = File(item.folderPath).name ?: "Unknown"
+                holder.binding.albumSize.text = "${item.totalCount} Files"
+                holder.binding.cvAlbum.setOnClickListener {
+                    val clickPos = holder.adapterPosition
+                    onClickListener.invoke(folderList[clickPos].folderPath, clickPos)
+                }
             }
 
             else -> {
@@ -65,7 +69,7 @@ class VideoFolderAdapter(val context: Context,val onClickListener: (FolderCount,
     }
 
     override fun getItemCount(): Int {
-        return videoList.size
+        return folderList.size
     }
 
 }

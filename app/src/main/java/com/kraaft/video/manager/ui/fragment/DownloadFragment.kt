@@ -65,9 +65,7 @@ class DownloadFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context?.let {
-            it.initVideoRv()
-        }
+        context?.initVideoRv()
         viewModel.syncAndObserveSounds(fileType)
     }
 

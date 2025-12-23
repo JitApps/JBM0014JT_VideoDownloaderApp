@@ -44,6 +44,10 @@ interface FileDAO {
     fun getFilesByType(mediaType: Int): Flow<List<FileEntity>>
 
     @Transaction
+    @Query("SELECT * FROM FileEntity WHERE folderPath = :folderPath AND fileType = :mediaType")
+    fun getFolderFilesByType(folderPath:String,mediaType: Int): Flow<List<FileEntity>>
+
+    @Transaction
     @Query("""
         SELECT folderPath, COUNT(*) AS totalCount
         FROM FileEntity WHERE fileType = :mediaType

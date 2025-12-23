@@ -78,11 +78,20 @@ class StatusListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setAdapter()
+        context?.setAdapter()
         observeUiState()
         checkForPermissions()
     }
 
+    private fun Context.setAdapter() {
+        statusListAdapter = StatusListAdapter(this) { item, pos ->
+
+        }
+        binding?.apply {
+            rvFiles.layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
+            rvFiles.adapter = statusListAdapter
+        }
+    }
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.statusData.collect { uiState ->
@@ -109,18 +118,6 @@ class StatusListFragment : BaseFragment() {
                     }
 
                 }
-            }
-        }
-    }
-
-    private fun setAdapter() {
-        context?.let {
-            statusListAdapter = StatusListAdapter(it) { item, pos ->
-
-            }
-            binding?.apply {
-                rvFiles.layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
-                rvFiles.adapter = statusListAdapter
             }
         }
     }

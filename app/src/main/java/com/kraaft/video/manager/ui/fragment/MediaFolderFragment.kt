@@ -1,6 +1,7 @@
 package com.kraaft.video.manager.ui.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +13,13 @@ import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.FragmentMediaFolderBinding
 import com.kraaft.video.manager.model.FolderCount
 import com.kraaft.video.manager.model.UiState
-import com.kraaft.video.manager.ui.adapter.AudioFolderAdapter
-import com.kraaft.video.manager.ui.adapter.VideoFolderAdapter
+import com.kraaft.video.manager.ui.activity.FolderListActivity
+import com.kraaft.video.manager.ui.adapter.FolderAdapter
 import com.kraaft.video.manager.ui.base.BaseFragment
 import com.kraaft.video.manager.ui.viewmodels.MediaViewModel
+import com.kraaft.video.manager.utils.FILE_AUDIO
+import com.kraaft.video.manager.utils.FILE_VIDEO
+import com.kraaft.video.manager.utils.gotoIntent
 import com.kraaft.video.manager.utils.showError
 import com.kraaft.video.manager.utils.showLoading
 import com.kraaft.video.manager.utils.showPage
@@ -27,18 +31,17 @@ import kotlinx.coroutines.launch
 class MediaFolderFragment : BaseFragment() {
 
     private var binding: FragmentMediaFolderBinding? = null
-    private var isSound = false
+    private var fileType = FILE_VIDEO
 
-    private var videoAdapter: VideoFolderAdapter? = null
-    private var audioAdapter: AudioFolderAdapter? = null
+    private var folderAdapter: FolderAdapter? = null
 
     val viewModel: MediaViewModel by viewModels()
 
     companion object {
-        fun getInstance(isSound: Boolean = false): MediaFolderFragment {
+        fun getInstance(fileType: Int = FILE_VIDEO): MediaFolderFragment {
             return MediaFolderFragment().apply {
                 arguments = Bundle().apply {
-                    putBoolean("isSound", isSound)
+                    putInt("fileType", fileType)
                 }
             }
         }
@@ -46,7 +49,7 @@ class MediaFolderFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        isSound = arguments?.getBoolean("isSound", false) ?: false
+        fileType = arguments?.getInt("fileType", FILE_VIDEO) ?: FILE_VIDEO
     }
 
     override fun onCreateView(
@@ -59,37 +62,24 @@ class MediaFolderFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context?.let {
-            if (isSound) {
-                it.initMusicRv()
-            } else {
-                it.initVideoRv()
+        context?.initRv()
+    }
+
+    fun Context.initRv() {
+        folderAdapter = FolderAdapter(this) { item, position ->
+            activity?.let {
+                it.gotoIntent(Intent(it, FolderListActivity::class.java).apply {
+                    putExtra("folderPath", item)
+                    putExtra("fileType", fileType)
+                }, false)
             }
         }
-    }
-
-    fun Context.initMusicRv() {
-        audioAdapter = AudioFolderAdapter(this) { item, position ->
-
-        }
         binding?.rvMedia?.apply {
-            layoutManager = LinearLayoutManager(this@initMusicRv)
-            adapter = audioAdapter
+            layoutManager = LinearLayoutManager(this@initRv)
+            adapter = folderAdapter
         }
-        observeAudioUiState()
+        if (fileType == FILE_AUDIO) observeAudioUiState() else observeVideoUiState()
     }
-
-    fun Context.initVideoRv() {
-        videoAdapter = VideoFolderAdapter(this) { item, position ->
-
-        }
-        binding?.rvMedia?.apply {
-            layoutManager = LinearLayoutManager(this@initVideoRv)
-            adapter = videoAdapter
-        }
-        observeVideoUiState()
-    }
-
 
     private fun observeAudioUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -103,7 +93,7 @@ class MediaFolderFragment : BaseFragment() {
                     }
 
                     is UiState.Success -> {
-                        refreshAudioData(uiState.data)
+                        refreshData(uiState.data)
                     }
 
                     is UiState.Error -> {
@@ -130,7 +120,7 @@ class MediaFolderFragment : BaseFragment() {
                     }
 
                     is UiState.Success -> {
-                        refreshVideoData(uiState.data)
+                        refreshData(uiState.data)
                     }
 
                     is UiState.Error -> {
@@ -145,20 +135,12 @@ class MediaFolderFragment : BaseFragment() {
         }
     }
 
-    private fun refreshVideoData(newList: List<FolderCount>) {
-        videoAdapter?.refreshData(newList.toMutableList())
+    private fun refreshData(newList: List<FolderCount>) {
+        folderAdapter?.refreshData(newList.toMutableList())
         binding?.let {
             it.includedError.showPage(it.cvMain)
         }
     }
-
-    private fun refreshAudioData(newList: List<FolderCount>) {
-        audioAdapter?.refreshData(newList.toMutableList())
-        binding?.let {
-            it.includedError.showPage(it.cvMain)
-        }
-    }
-
 
     fun showErrorOrEmpty(message: String = getString(R.string.kk_error_no_data)) {
         binding?.let {

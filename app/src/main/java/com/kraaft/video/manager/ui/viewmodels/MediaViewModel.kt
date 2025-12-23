@@ -53,6 +53,26 @@ class MediaViewModel @Inject constructor(
         }
     }
 
+
+    fun fetchFolderFiles(folderPath: String, fileType: Int) = viewModelScope.launch {
+        _playData.emit(UiState.Loading)
+        try {
+            dbHelper.getFolderFilesByType(folderPath, fileType)
+                .distinctUntilChanged()
+                .collectLatest { data ->
+                    _playData.emit(
+                        if (data.isEmpty()) {
+                            UiState.Empty
+                        } else {
+                            UiState.Success(data)
+                        }
+                    )
+                }
+        } catch (e: Exception) {
+            _playData.emit(UiState.Error(e.message ?: "Something went wrong"))
+        }
+    }
+
     fun addToPlaylist(fileEntity: FileEntity, playName: String) = viewModelScope.launch {
         dbHelper.addToPlayList(fileEntity, playName)
     }

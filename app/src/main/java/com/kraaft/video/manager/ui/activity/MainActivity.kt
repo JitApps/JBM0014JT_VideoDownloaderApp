@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import com.kraaft.video.manager.databinding.ActivityMainBinding
 import com.kraaft.video.manager.ui.base.BaseActivity
+import com.kraaft.video.manager.utils.FILE_AUDIO
+import com.kraaft.video.manager.utils.FILE_VIDEO
 import com.kraaft.video.manager.utils.PERMISSION_SOUND
 import com.kraaft.video.manager.utils.PERMISSION_VIDEO
 import com.kraaft.video.manager.utils.askPermissions
@@ -46,14 +48,16 @@ class MainActivity : BaseActivity() {
 
             btnVideoPlayer.onSingleClick {
                 askPermissions(listOf(PERMISSION_VIDEO)) {
-                    gotoActivity(MediaListActivity::class.java, false)
+                    gotoIntent(Intent(this@MainActivity, MediaListActivity::class.java).apply {
+                        putExtra("fileType", FILE_VIDEO)
+                    }, false)
                 }
             }
 
             btnMusicPlayer.onSingleClick {
                 askPermissions(listOf(PERMISSION_SOUND)) {
                     gotoIntent(Intent(this@MainActivity, MediaListActivity::class.java).apply {
-                        putExtra("isSound", true)
+                        putExtra("fileType", FILE_AUDIO)
                     }, false)
                 }
             }

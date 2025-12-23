@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/clickEffect"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_80sdp"
     android:layout_marginTop="@dimen/_10sdp">
@@ -13,6 +12,7 @@
 
         <com.kraaft.video.manager.views.RoundedLayout
             android:id="@+id/cvAlbum"
+            style="@style/clickEffect"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/_65sdp"

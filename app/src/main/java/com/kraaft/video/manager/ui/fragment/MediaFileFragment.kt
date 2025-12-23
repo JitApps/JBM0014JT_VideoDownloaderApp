@@ -18,6 +18,8 @@ import com.kraaft.video.manager.ui.adapter.AudioListAdapter
 import com.kraaft.video.manager.ui.adapter.VideoListAdapter
 import com.kraaft.video.manager.ui.base.BaseFragment
 import com.kraaft.video.manager.ui.viewmodels.MediaViewModel
+import com.kraaft.video.manager.utils.FILE_AUDIO
+import com.kraaft.video.manager.utils.FILE_VIDEO
 import com.kraaft.video.manager.utils.showError
 import com.kraaft.video.manager.utils.showLoading
 import com.kraaft.video.manager.utils.showPage
@@ -30,7 +32,7 @@ import kotlinx.coroutines.launch
 class MediaFileFragment : BaseFragment() {
 
     private var binding: FragmentMediaFileBinding? = null
-    private var isSound = false
+    private var fileType = FILE_VIDEO
     private var isPlayList = false
     private var videoAdapter: VideoListAdapter? = null
     private var audioAdapter: AudioListAdapter? = null
@@ -38,10 +40,10 @@ class MediaFileFragment : BaseFragment() {
     val viewModel: MediaViewModel by viewModels()
 
     companion object {
-        fun getInstance(isSound: Boolean = false, isPlayList: Boolean = false): MediaFileFragment {
+        fun getInstance(fileType: Int = FILE_VIDEO, isPlayList: Boolean = false): MediaFileFragment {
             return MediaFileFragment().apply {
                 arguments = Bundle().apply {
-                    putBoolean("isSound", isSound)
+                    putInt("fileType", fileType)
                     putBoolean("isPlayList", isPlayList)
                 }
             }
@@ -50,7 +52,7 @@ class MediaFileFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        isSound = arguments?.getBoolean("isSound", false) ?: false
+        fileType = arguments?.getInt("fileType", FILE_VIDEO) ?: FILE_VIDEO
         isPlayList = arguments?.getBoolean("isPlayList", false) ?: false
     }
 
@@ -64,9 +66,7 @@ class MediaFileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context?.let {
-            if (isSound) it.initMusicRv() else it.initVideoRv()
-        }
+        if (fileType == FILE_AUDIO) context?.initMusicRv() else context?.initVideoRv()
     }
 
     fun Context.initMusicRv() {
@@ -128,7 +128,7 @@ class MediaFileFragment : BaseFragment() {
                         }
                     }
                 } ?: run {
-                    viewModel.fetchPlayList(if (isSound) "sound" else "video")
+                    viewModel.fetchPlayList(if (fileType == FILE_AUDIO) "sound" else "video")
                 }
             }
         }

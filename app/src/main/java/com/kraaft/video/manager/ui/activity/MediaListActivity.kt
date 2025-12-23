@@ -11,6 +11,8 @@ import com.kraaft.video.manager.ui.base.BaseActivity
 import com.kraaft.video.manager.ui.fragment.MediaFileFragment
 import com.kraaft.video.manager.ui.fragment.MediaFolderFragment
 import com.kraaft.video.manager.ui.viewmodels.MediaViewModel
+import com.kraaft.video.manager.utils.FILE_AUDIO
+import com.kraaft.video.manager.utils.FILE_VIDEO
 import com.kraaft.video.manager.utils.beVisible
 import com.kraaft.video.manager.utils.onSingleClick
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +22,7 @@ import kotlin.getValue
 class MediaListActivity : BaseActivity() {
 
     private var binding: ActivityMediaListBinding? = null
-    private var isSound = false
+    private var fileType = FILE_VIDEO
 
     val viewModel: MediaViewModel by viewModels()
 
@@ -28,14 +30,18 @@ class MediaListActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaListBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        isSound = intent.getBooleanExtra("isSound", false)
-        if (isSound) {
+        getIntentData()
+        onClick()
+        setViewPager()
+        if (fileType == FILE_AUDIO) {
             viewModel.syncAndObserveSounds()
         } else {
             viewModel.syncAndObserveVideos()
         }
-        onClick()
-        setViewPager()
+    }
+
+    fun getIntentData() {
+        fileType = intent.getIntExtra("fileType", FILE_VIDEO)
     }
 
     private fun onClick() {
@@ -52,7 +58,7 @@ class MediaListActivity : BaseActivity() {
 
     private fun setViewPager() {
         val tabList = listOf(
-            if (isSound) "Music" else "Videos", "Folder", "PlayList"
+            if (fileType == FILE_AUDIO) "Music" else "Videos", "Folder", "PlayList"
         )
         binding?.let {
             it.viewPager.apply {
@@ -71,9 +77,9 @@ class MediaListActivity : BaseActivity() {
 
     private fun loadFragments(): List<Fragment> {
         return listOf<Fragment>(
-            MediaFileFragment.getInstance(isSound),
-            MediaFolderFragment.getInstance(isSound),
-            MediaFileFragment.getInstance(isSound, true),
+            MediaFileFragment.getInstance(fileType),
+            MediaFolderFragment.getInstance(fileType),
+            MediaFileFragment.getInstance(fileType, true),
         )
     }
 }
