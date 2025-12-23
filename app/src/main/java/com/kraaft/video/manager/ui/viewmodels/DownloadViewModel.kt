@@ -85,7 +85,7 @@ class DownloadViewModel @Inject constructor(
 
 
     fun syncAndObserveSounds(fileType: Int) {
-        observeFiles()
+        observeFiles(fileType)
         viewModelScope.launch(Dispatchers.IO) {
             syncFiles(fileType)
         }
@@ -114,8 +114,8 @@ class DownloadViewModel @Inject constructor(
         }
     }
 
-    fun observeFiles() {
-        dbHelper.getFilesByType(FILE_OTHER_DOWNLOAD).distinctUntilChanged()
+    fun observeFiles(fileType: Int) {
+        dbHelper.getFilesByType(fileType).distinctUntilChanged()
             .onEach { files ->
                 _dataBuffer.value = files
             }

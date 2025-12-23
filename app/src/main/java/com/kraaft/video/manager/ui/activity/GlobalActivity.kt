@@ -168,10 +168,13 @@ class GlobalActivity : BaseActivity() {
             viewModel.progressData.collectLatest { progressData ->
                 progressData?.let { data ->
                     downloadAdapter?.videoList?.indexOfFirst { it.fileName == data.first }?.let {
-                        downloadAdapter?.videoList[it]?.apply {
-                            progress = data.second
+                        if (it != -1)
+                        {
+                            downloadAdapter?.videoList[it]?.apply {
+                                progress = data.second
+                            }
+                            downloadAdapter?.notifyItemChanged(it)
                         }
-                        downloadAdapter?.notifyItemChanged(it)
                     }
                 }
             }
