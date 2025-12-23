@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,6 +68,12 @@ class DownloadFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         context?.initVideoRv()
         viewModel.syncAndObserveSounds(fileType)
+    }
+
+    fun toggleSelection(isVisible: Boolean) {
+        binding?.includedMenu?.cvSelection?.isVisible = isVisible
+        binding?.includedMenu?.cvDelete?.isVisible = true
+        binding?.includedMenu?.cvDownload?.isVisible = false
     }
 
     fun Context.initVideoRv() {

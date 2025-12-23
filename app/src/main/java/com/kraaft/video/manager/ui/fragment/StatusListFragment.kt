@@ -1,23 +1,26 @@
 package com.kraaft.video.manager.ui.fragment
 
+import android.R.attr.onClick
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.storage.StorageManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.github.florent37.inlineactivityresult.InlineActivityResult
 import com.kraaft.video.manager.R
-import com.kraaft.video.manager.databinding.FragmentFileListBinding
+import com.kraaft.video.manager.databinding.FragmentStatusListBinding
 import com.kraaft.video.manager.model.FileModel
 import com.kraaft.video.manager.model.UiState
 import com.kraaft.video.manager.ui.adapter.StatusListAdapter
@@ -42,7 +45,7 @@ class StatusListFragment : BaseFragment() {
 
     val viewModel: StatusViewModel by viewModels()
 
-    private var binding: FragmentFileListBinding? = null
+    private var binding: FragmentStatusListBinding? = null
     private var folderPath = ""
 
     private var statusListAdapter: StatusListAdapter? = null
@@ -67,7 +70,7 @@ class StatusListFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFileListBinding.inflate(layoutInflater, container, false)
+        binding = FragmentStatusListBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
@@ -79,12 +82,37 @@ class StatusListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         context?.setAdapter()
+        onClick()
         observeUiState()
         checkForPermissions()
     }
 
+    fun onClick() {
+        binding?.includedMenu?.ivCheckBox?.setSafeOnCheckedChangeListener { button, isChecked ->
+            if (isChecked && statusListAdapter?.isSelectedAll() == true) {
+                statusListAdapter?.checkAll(false)
+            } else {
+                statusListAdapter?.checkAll(true)
+            }
+        }
+    }
+
+    fun toggleSelection(isVisible: Boolean) {
+        binding?.includedMenu?.cvSelection?.isVisible = isVisible
+        binding?.includedMenu?.cvDelete?.isVisible = false
+        binding?.includedMenu?.cvDownload?.isVisible = true
+        binding?.includedMenu?.ivCheckBox?.isChecked = false
+    }
+
     private fun Context.setAdapter() {
-        statusListAdapter = StatusListAdapter(this) { item, pos ->
+        statusListAdapter = StatusListAdapter(this, selCallBack = {
+            toggleSelection(statusListAdapter?.selectedList?.isNotEmpty() == true)
+            if (statusListAdapter?.isSelectedAll() == true) {
+                binding?.includedMenu?.ivCheckBox?.isChecked = true
+            } else if (statusListAdapter?.isDeSelectedAll() == true) {
+                toggleSelection(false)
+            }
+        }) { item, pos ->
 
         }
         binding?.apply {
@@ -92,6 +120,7 @@ class StatusListFragment : BaseFragment() {
             rvFiles.adapter = statusListAdapter
         }
     }
+
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.statusData.collect { uiState ->

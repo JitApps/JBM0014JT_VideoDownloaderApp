@@ -35,4 +35,6 @@
     <string name="chingari">Chingari</string>
     <string name="josh">Josh</string>
     <string name="paste">Paste</string>
+    <string name="select_all">Select All</string>
+    <string name="delete">Delete</string>
 </resources>
