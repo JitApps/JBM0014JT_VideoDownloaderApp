@@ -38,7 +38,7 @@
             android:id="@+id/ivCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/checkBoxStyle"
+            style="@style/RoundCheckBoxStyle"
             android:layout_margin="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

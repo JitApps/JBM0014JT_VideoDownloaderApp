@@ -1,0 +1,37 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/_35sdp"
+    android:height="@dimen/_35sdp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <group
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:translateX="2.4"
+        android:translateY="2.4">
+
+        <path
+            android:fillColor="@color/colorMain"
+            android:pathData="
+            M7,4
+            H17
+            A3,3 0 0 1 20,7
+            V17
+            A3,3 0 0 1 17,20
+            H7
+            A3,3 0 0 1 4,17
+            V7
+            A3,3 0 0 1 7,4
+            Z" />
+
+        <!-- Check mark centered with padding -->
+        <path
+            android:fillColor="@android:color/transparent"
+            android:pathData="M8.5,12 L10.5,14 L15.5,9"
+            android:strokeWidth="2"
+            android:strokeColor="#FFFFFF"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+
+    </group>
+</vector>

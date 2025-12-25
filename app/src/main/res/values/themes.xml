@@ -123,13 +123,22 @@
         <attr name="cornerAll" format="dimension"/>
     </declare-styleable>
 
-    <style name="checkBoxStyle">
+    <style name="RoundCheckBoxStyle">
         <item name="android:scaleX">0.8</item>
         <item name="android:scaleY">0.8</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
         <item name="buttonTint">@null</item>
-        <item name="android:button">@drawable/ic_check_mark</item>
+        <item name="android:button">@drawable/ic_round_check_box</item>
+    </style>
+
+    <style name="SquareCheckBoxStyle">
+        <item name="android:scaleX">0.8</item>
+        <item name="android:scaleY">0.8</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="buttonTint">@null</item>
+        <item name="android:button">@drawable/ic_square_check_box</item>
     </style>
 
     <style name="clickEffect">

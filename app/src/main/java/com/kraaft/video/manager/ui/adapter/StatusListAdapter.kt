@@ -22,6 +22,7 @@ class StatusListAdapter(
 ) :
     RecyclerView.Adapter<StatusListAdapter.FileHolder>() {
 
+    private var isSelection = false
     private var statusList = mutableListOf<FileModel>()
     var selectedList = mutableMapOf<String, FileModel>()
 
@@ -37,12 +38,8 @@ class StatusListAdapter(
         }
     }
 
-    fun isSelectedAll(): Boolean{
+    fun isSelectedAll(): Boolean {
         return statusList.size == selectedList.size
-    }
-
-    fun isDeSelectedAll(): Boolean{
-        return selectedList.isEmpty()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -53,8 +50,15 @@ class StatusListAdapter(
                 .toMutableMap()
         } else {
             selectedList.clear()
+            closeSelection()
         }
         notifyDataSetChanged()
+    }
+
+    fun closeSelection() {
+        if (selectedList.isEmpty()) {
+            isSelection = false
+        }
     }
 
     fun refreshData(newList: MutableList<FileModel>) {
@@ -86,14 +90,25 @@ class StatusListAdapter(
                 .into(ivFile)
             holder.binding.ivCheckBox.isChecked = selectedList.containsKey(fileModel.fileName)
             holder.binding.ivCheckBox.setSafeOnCheckedChangeListener { button, isChecked ->
-                Log.e("TAGRR","CCCCCC")
+                isSelection = true
                 selectedList.remove(fileModel.fileName)
                     ?: selectedList.put(fileModel.fileName, fileModel)
+                closeSelection()
                 selCallBack.invoke()
             }
 
             root.setOnClickListener {
-
+                if (isSelection) {
+                    selectedList.remove(fileModel.fileName)
+                        ?: selectedList.put(fileModel.fileName, fileModel)
+                    holder.binding.ivCheckBox.isChecked =
+                        selectedList.containsKey(fileModel.fileName)
+                    closeSelection()
+                    selCallBack.invoke()
+                } else {
+                    val selPosition = holder.adapterPosition
+                    onClickListener.invoke(statusList[selPosition], selPosition)
+                }
             }
         }
     }

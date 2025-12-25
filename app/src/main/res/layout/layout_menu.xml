@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintBottom_toBottomOf="parent"
-    android:visibility="gone"
     android:id="@+id/cvSelection"
     app:backgroundColor="#4d000000"
+    android:visibility="gone"
     app:cornerLeftTop="@dimen/corner_size"
     app:cornerRightTop="@dimen/corner_size">
 
@@ -24,14 +24,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <com.kraaft.video.manager.utils.SafeCheckBox
-            android:id="@+id/ivCheckBox"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cvCheckBox"
             android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
             android:background="@drawable/bg_oval_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="@dimen/_35sdp">
+
+            <com.kraaft.video.manager.utils.SafeCheckBox
+                android:id="@+id/ivCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SquareCheckBoxStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <TextView
             android:id="@+id/tvSelect"
@@ -44,15 +57,15 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivCheckBox" />
+            app:layout_constraintTop_toBottomOf="@id/cvCheckBox" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cvDownload"
+        android:visibility="gone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/ivDownload"

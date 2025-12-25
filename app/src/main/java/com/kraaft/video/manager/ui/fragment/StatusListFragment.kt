@@ -89,10 +89,11 @@ class StatusListFragment : BaseFragment() {
 
     fun onClick() {
         binding?.includedMenu?.ivCheckBox?.setSafeOnCheckedChangeListener { button, isChecked ->
-            if (isChecked && statusListAdapter?.isSelectedAll() == true) {
-                statusListAdapter?.checkAll(false)
-            } else {
+            if (isChecked) {
                 statusListAdapter?.checkAll(true)
+            } else {
+                statusListAdapter?.checkAll(false)
+                toggleSelection(false)
             }
         }
     }
@@ -109,8 +110,6 @@ class StatusListFragment : BaseFragment() {
             toggleSelection(statusListAdapter?.selectedList?.isNotEmpty() == true)
             if (statusListAdapter?.isSelectedAll() == true) {
                 binding?.includedMenu?.ivCheckBox?.isChecked = true
-            } else if (statusListAdapter?.isDeSelectedAll() == true) {
-                toggleSelection(false)
             }
         }) { item, pos ->
 
