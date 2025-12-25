@@ -1,23 +1,12 @@
 package com.kraaft.video.manager.utils
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.graphics.toColorInt
-import com.downloader.Error
-import com.downloader.OnDownloadListener
-import com.downloader.PRDownloader
-import com.downloader.utils.Utils
-import com.google.android.material.button.MaterialButton
-import com.google.gson.Gson
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.DialogCommonBinding
 
@@ -117,6 +106,7 @@ fun Context.showForceDialog(
     }
 }
 
+/*
 @SuppressLint("SetTextI18n")
 fun Context.showDownloadDialog(
     folderPath: String = "",
@@ -213,12 +203,13 @@ fun Context.downloadFile(
         .setOnProgressListener { progress ->
             progressCallBack.invoke(progress.currentBytes, progress.totalBytes)
         }.start(object : OnDownloadListener {
+
             override fun onDownloadComplete() {
                 callback.invoke(true, "")
             }
 
             override fun onError(error: com.downloader.Error) {
-                callback.invoke(false, "Download Failed")
             }
         })
 }
+*/

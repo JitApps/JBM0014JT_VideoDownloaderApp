@@ -1,56 +1,41 @@
 package com.kraaft.video.manager.ui.adapter
 
-import android.R.id.message
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.downloader.utils.Utils
 import com.kraaft.video.manager.databinding.ItemDownloadBinding
-import com.kraaft.video.manager.databinding.ItemMediaFolderBinding
 import com.kraaft.video.manager.model.DownloadProgress
-import com.kraaft.video.manager.model.FileEntity
-import com.kraaft.video.manager.model.FolderCount
 import com.kraaft.video.manager.model.MediaUrl
-import com.kraaft.video.manager.ui.viewmodels.DownloadViewModel
 import com.kraaft.video.manager.utils.DOWNLOAD_COMPLETE
 import com.kraaft.video.manager.utils.DOWNLOAD_FAILED
-import com.kraaft.video.manager.utils.DOWNLOAD_NOT_STARTED
 import com.kraaft.video.manager.utils.DOWNLOAD_RUNNING
-import com.kraaft.video.manager.utils.DiffCallback
-import com.kraaft.video.manager.utils.FILE_OTHER_DOWNLOAD
-import com.kraaft.video.manager.utils.downloadFile
+import com.kraaft.video.manager.utils.DOWNLOAD_STARTED
 import com.kraaft.video.manager.utils.formatBytes
-import com.kraaft.video.manager.utils.generateDownloadId
-import com.kraaft.video.manager.utils.getDownloadsPath
-import java.io.File
-import java.util.concurrent.ThreadLocalRandom.current
 import kotlin.math.roundToInt
 
-class DownloadAdapter(val context: Context, val viewModel: DownloadViewModel) :
+class DownloadAdapter(val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        var videoList = mutableListOf<MediaUrl>()
+    var videoList = mutableListOf<MediaUrl>()
 
     inner class DownloadHolder(val binding: ItemDownloadBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     fun refreshData(newList: List<MediaUrl>) {
-      /*  val diffResult = DiffUtil.calculateDiff(
-            DiffCallback(
-                oldList = videoList,
-                newList = newList,
-                areItemsTheSame = { oldItem, newItem -> oldItem.fileName == newItem.fileName }
-            )
-        )*/
+        /*  val diffResult = DiffUtil.calculateDiff(
+              DiffCallback(
+                  oldList = videoList,
+                  newList = newList,
+                  areItemsTheSame = { oldItem, newItem -> oldItem.fileName == newItem.fileName }
+              )
+          )*/
 
         videoList.clear()
         videoList.addAll(newList)
         notifyDataSetChanged()
-      //  diffResult.dispatchUpdatesTo(this)
+        //  diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(
@@ -104,21 +89,35 @@ class DownloadAdapter(val context: Context, val viewModel: DownloadViewModel) :
                     }
 
                     DOWNLOAD_RUNNING -> {
-                        val percent =
-                            ((item.progress.current.toDouble() / item.progress.total) * 100).roundToInt()
-
                         val currentText = formatBytes(item.progress.current)
-                        val totalText = formatBytes(item.progress.total)
 
-                        holder.binding.progressBar.visibility = View.VISIBLE
-                        holder.binding.progressBar.progress = percent
-                        holder.binding.tvPercent.text = "$percent%"
-                        holder.binding.tvDuration.text = "$currentText / $totalText"
+                        if (item.progress.total > 0) {
+                            val percent =
+                                ((item.progress.current.toDouble() / item.progress.total) * 100).roundToInt()
+
+                            val totalText = formatBytes(item.progress.total)
+
+                            holder.binding.progressBar.visibility = View.VISIBLE
+                            holder.binding.progressBar.progress = percent
+                            holder.binding.tvPercent.text = "$percent%"
+                            holder.binding.tvDuration.text = "$currentText / $totalText"
+                        } else {
+                            holder.binding.progressBar.visibility = View.GONE
+                            holder.binding.tvDuration.text = currentText
+                        }
+                    }
+
+                    DOWNLOAD_STARTED -> {
+                        holder.binding.progressBar.visibility =
+                            if (item.progress.total > 0) View.VISIBLE else View.GONE
+                        holder.binding.tvDuration.text = "Download Started"
+                        holder.binding.tvPercent.text = ""
+                        holder.binding.progressBar.progress = 0
                     }
 
                     else -> {
-                        holder.binding.progressBar.visibility = View.VISIBLE
-                        holder.binding.tvDuration.text = "Download Started"
+                        holder.binding.progressBar.visibility = View.GONE
+                        holder.binding.tvDuration.text = "Download Starting Soon"
                         holder.binding.tvPercent.text = ""
                         holder.binding.progressBar.progress = 0
                     }

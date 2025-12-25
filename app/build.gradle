@@ -99,9 +99,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
 
-    implementation(libs.prdownloader)
-    implementation libs.jsoup
-
+    implementation(libs.okhttp)
 
     implementation(libs.permissionx)
 }

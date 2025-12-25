@@ -1,10 +1,6 @@
 package com.kraaft.video.manager.ui.viewmodels
 
-import android.R.attr.data
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -19,11 +15,6 @@ import com.kraaft.video.manager.model.FileEntity
 import com.kraaft.video.manager.model.MediaUrl
 import com.kraaft.video.manager.model.NetworkResult
 import com.kraaft.video.manager.model.UiState
-import com.kraaft.video.manager.utils.DOWNLOAD_COMPLETE
-import com.kraaft.video.manager.utils.DOWNLOAD_FAILED
-import com.kraaft.video.manager.utils.DOWNLOAD_NOT_STARTED
-import com.kraaft.video.manager.utils.FILE_OTHER_DOWNLOAD
-import com.kraaft.video.manager.utils.handleResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -40,8 +31,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import org.json.JSONObject
-import retrofit2.Response
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -84,7 +73,7 @@ class DownloadViewModel @Inject constructor(
             .stateIn(viewModelScope, SharingStarted.Companion.Lazily, UiState.Loading)
 
 
-    fun syncAndObserveSounds(fileType: Int) {
+    fun syncAndObserveDownloads(fileType: Int) {
         observeFiles(fileType)
         viewModelScope.launch(Dispatchers.IO) {
             syncFiles(fileType)

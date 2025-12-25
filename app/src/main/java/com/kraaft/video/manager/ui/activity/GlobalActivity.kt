@@ -1,44 +1,28 @@
 package com.kraaft.video.manager.ui.activity
 
-import android.R.attr.data
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.ActivityGlobalBinding
-import com.kraaft.video.manager.model.DownloadModel
 import com.kraaft.video.manager.model.NetworkResult
 import com.kraaft.video.manager.model.UiState
 import com.kraaft.video.manager.ui.adapter.DownloadAdapter
-import com.kraaft.video.manager.ui.adapter.VideoListAdapter
 import com.kraaft.video.manager.ui.base.BaseActivity
 import com.kraaft.video.manager.ui.viewmodels.DownloadViewModel
-import com.kraaft.video.manager.utils.FILE_OTHER_DOWNLOAD
 import com.kraaft.video.manager.utils.beVisible
-import com.kraaft.video.manager.utils.getDownloadsPath
 import com.kraaft.video.manager.utils.isNotEmpty
 import com.kraaft.video.manager.utils.onSingleClick
-import com.kraaft.video.manager.utils.showDownloadDialog
 import com.kraaft.video.manager.utils.showError
 import com.kraaft.video.manager.utils.showLoading
 import com.kraaft.video.manager.utils.showPage
 import com.kraaft.video.manager.utils.showToast
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.jsoup.Jsoup
-import kotlin.getValue
-import kotlin.jvm.java
 
 class GlobalActivity : BaseActivity() {
 
@@ -93,7 +77,7 @@ class GlobalActivity : BaseActivity() {
 
 
     fun Context.initDownloadRv() {
-        downloadAdapter = DownloadAdapter(this, viewModel)
+        downloadAdapter = DownloadAdapter(this)
         binding?.rvMedia?.apply {
             layoutManager = LinearLayoutManager(this@initDownloadRv)
             itemAnimator?.apply {

@@ -2,26 +2,21 @@ package com.kraaft.video.manager.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.kraaft.video.manager.R
 import com.kraaft.video.manager.databinding.FragmentDownloadBinding
-import com.kraaft.video.manager.databinding.FragmentMediaFileBinding
 import com.kraaft.video.manager.model.FileEntity
 import com.kraaft.video.manager.model.UiState
-import com.kraaft.video.manager.ui.adapter.AudioListAdapter
 import com.kraaft.video.manager.ui.adapter.VideoListAdapter
 import com.kraaft.video.manager.ui.base.BaseFragment
 import com.kraaft.video.manager.ui.viewmodels.DownloadViewModel
-import com.kraaft.video.manager.ui.viewmodels.MediaViewModel
 import com.kraaft.video.manager.utils.FILE_OTHER_DOWNLOAD
 import com.kraaft.video.manager.utils.showError
 import com.kraaft.video.manager.utils.showLoading
@@ -66,18 +61,36 @@ class DownloadFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        onClick()
         context?.initVideoRv()
-        viewModel.syncAndObserveSounds(fileType)
+        viewModel.syncAndObserveDownloads(fileType)
+    }
+
+    fun onClick() {
+        binding?.includedMenu?.ivCheckBox?.setSafeOnCheckedChangeListener { button, isChecked ->
+            if (isChecked) {
+                videoAdapter?.checkAll(true)
+            } else {
+                videoAdapter?.checkAll(false)
+                toggleSelection(false)
+            }
+        }
     }
 
     fun toggleSelection(isVisible: Boolean) {
         binding?.includedMenu?.cvSelection?.isVisible = isVisible
-        binding?.includedMenu?.cvDelete?.isVisible = true
-        binding?.includedMenu?.cvDownload?.isVisible = false
+        binding?.includedMenu?.cvDelete?.isVisible = false
+        binding?.includedMenu?.cvDownload?.isVisible = true
+        binding?.includedMenu?.ivCheckBox?.isChecked = false
     }
 
     fun Context.initVideoRv() {
-        videoAdapter = VideoListAdapter(this) { item, position ->
+        videoAdapter = VideoListAdapter(this, true, selCallBack = {
+            toggleSelection(videoAdapter?.selectedList?.isNotEmpty() == true)
+            if (videoAdapter?.isSelectedAll() == true) {
+                binding?.includedMenu?.ivCheckBox?.isChecked = true
+            }
+        }) { item, position ->
 
         }
         binding?.rvMedia?.apply {

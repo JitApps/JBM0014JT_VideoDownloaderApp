@@ -9,6 +9,7 @@ const val PERMISSION_VIDEO = 1
 const val PERMISSION_SOUND = 2
 
 const val DOWNLOAD_NOT_STARTED = -1
+const val DOWNLOAD_STARTED = 2
 const val DOWNLOAD_RUNNING = 3
 const val DOWNLOAD_COMPLETE = 1
 const val DOWNLOAD_FAILED = 0

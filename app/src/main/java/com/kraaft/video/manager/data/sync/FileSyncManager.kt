@@ -37,7 +37,7 @@ class FileSyncManager @Inject constructor(
         val folder = File(getDownloadsPath(fileType))
         if (folder.exists() && folder.isDirectory) {
             folder.listFiles()?.onEach { file ->
-                if (file.isFile && !file.absolutePath.toString().contains(".nomedia")) {
+                if (file.isFile && !file.absolutePath.toString().contains(".nomedia") && !file.absolutePath.toString().contains(".tmp")) {
                     val folderName = file.parentFile?.absolutePath ?: "Unknown"
                     listFiles.add(
                         FileEntity(

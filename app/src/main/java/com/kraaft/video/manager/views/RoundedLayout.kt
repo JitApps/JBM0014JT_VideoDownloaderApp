@@ -192,9 +192,7 @@ open class RoundedLayout : ConstraintLayout {
         /** for outline remake whenenver draw */
         path = null
 
-        if (path == null) {
-            path = Path()
-        }
+        path = Path()
 
         floatArrayOf(
             cornerLeftTop, cornerLeftTop, cornerRightTop, cornerRightTop, cornerRightBottom,
@@ -210,8 +208,8 @@ open class RoundedLayout : ConstraintLayout {
                 cornerRightBottom, cornerRightBottom, cornerLeftBottom, cornerLeftBottom
             )
 
-            if (strokeLineWidth != 0F && strokeLineColor != null) {
-                setStroke(strokeLineWidth.toInt(), strokeLineColor!!, dashLineWidth, dashLineGap)
+            if (strokeLineWidth != 0F) {
+                setStroke(strokeLineWidth.toInt(), strokeLineColor, dashLineWidth, dashLineGap)
             }
 
             setColor(backgroundColor ?: Color.WHITE)
@@ -257,7 +255,6 @@ open class RoundedLayout : ConstraintLayout {
         super.setTranslationZ(translationZ)
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun getOutlineProvider(): ViewOutlineProvider {
         return object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline) {
